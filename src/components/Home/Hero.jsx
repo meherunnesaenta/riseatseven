@@ -421,7 +421,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ফুটার */}
+      
         <div className="h7-footer" ref={footerRef}>
           <p className="h7-footer-text">
             Organic media planners creating, distributing & optimising{" "}

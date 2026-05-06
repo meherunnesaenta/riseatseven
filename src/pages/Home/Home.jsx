@@ -16,48 +16,47 @@ import MarqueeBanner from '../../components/Home/Marqueebanner';
 const Home = () => {
   return (
     <div className="bg-grey-100">
+      <AnnouncementBar />
       <Navbar />
 
-      {/* Hero - py-0 */}
+      {/* Hero */}
       <Hero />
 
-      {/* Brand Section - pt-6 on mobile, pt-12 on desktop */}
-      <div className="pt-6 xl:pt-12">
-        <Brand />
-      </div>
+      {/* Brand - আসল সাইটে এখানে কোনো অতিরিক্ত প্যাডিং/মার্জিন নেই */}
+      <Brand />
 
-      {/* Agency Section - py-12 on mobile, py-24 on desktop */}
+      {/* Agency Section */}
       <div className="py-12 xl:py-24">
         <AgencySection />
       </div>
 
-      {/* Feature Card - pb-12 on mobile, pb-24 on desktop */}
+      {/* Feature Card */}
       <div className="pb-12 xl:pb-24">
         <FeatureCard />
       </div>
 
-      {/* Our Services - pb-12 on mobile, pb-24 on desktop */}
+      {/* Our Services */}
       <div className="pb-12 xl:pb-24">
         <OurServices />
       </div>
 
-      {/* Marquee Banner - py-0 */}
+      {/* Marquee Banner */}
       <MarqueeBanner />
 
-      {/* Stacked Cards Scroll - pb-12 on mobile, pb-24 on desktop */}
+      {/* Stacked Cards Scroll */}
       <div className="pb-12 xl:pb-24">
         <StackedCardsScroll />
       </div>
 
-      {/* What's New - pb-12 on mobile, pb-24 on desktop */}
+      {/* What's New */}
       <div className="pb-12 xl:pb-24">
         <WhatsNew />
       </div>
 
-      {/* Rise at Seven Section - (আপনার চাহিদা অনুযায়ী, ডিফল্ট কোনো গ্যাপ নাও থাকতে পারে) */}
+      {/* Rise at Seven Section */}
       <RiseAtSeven />
 
-      {/* Footer - mt-8 on mobile, mt-0 on desktop,  এটার ভিতরের প্যাডিং নিজস্ব */}
+      {/* Footer */}
       <div className="mt-8 lg:mt-0">
         <Footer />
       </div>

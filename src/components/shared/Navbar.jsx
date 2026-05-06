@@ -33,57 +33,57 @@ const RiseLogo = ({ scrolled }) => (
 );
 
 // Announcement Bar Component
-const AnnouncementBar = ({ announcementRef, hideAnnouncementBar }) => {
-  const textRef = useRef(null);
-  const textCloneRef = useRef(null);
+// const AnnouncementBar = ({ announcementRef, hideAnnouncementBar }) => {
+//   const textRef = useRef(null);
+//   const textCloneRef = useRef(null);
 
-  useEffect(() => {
-    if (textRef.current && textCloneRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.set(textCloneRef.current, { y: 24 });
-      });
-      return () => ctx.revert();
-    }
-  }, []);
+//   useEffect(() => {
+//     if (textRef.current && textCloneRef.current) {
+//       const ctx = gsap.context(() => {
+//         gsap.set(textCloneRef.current, { y: 24 });
+//       });
+//       return () => ctx.revert();
+//     }
+//   }, []);
 
-  const handleMouseEnter = () => {
-    if (textRef.current && textCloneRef.current) {
-      gsap.to(textRef.current, { y: -24, duration: 0.3, ease: "power2.inOut" });
-      gsap.to(textCloneRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
-    }
-  };
+//   const handleMouseEnter = () => {
+//     if (textRef.current && textCloneRef.current) {
+//       gsap.to(textRef.current, { y: -24, duration: 0.3, ease: "power2.inOut" });
+//       gsap.to(textCloneRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
+//     }
+//   };
 
-  const handleMouseLeave = () => {
-    if (textRef.current && textCloneRef.current) {
-      gsap.to(textRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
-      gsap.to(textCloneRef.current, { y: 24, duration: 0.3, ease: "power2.inOut" });
-    }
-  };
+//   const handleMouseLeave = () => {
+//     if (textRef.current && textCloneRef.current) {
+//       gsap.to(textRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
+//       gsap.to(textCloneRef.current, { y: 24, duration: 0.3, ease: "power2.inOut" });
+//     }
+//   };
 
-  if (hideAnnouncementBar) return null;
+//   if (hideAnnouncementBar) return null;
 
-  return (
-    <div className="nb-announcement-wrapper">
-      <a 
-        href="https://riseatseven.com/category-leaderboard/" 
-        className="nb-announcement"
-        ref={announcementRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <span className="nb-announcement-icon">🚨</span>
-        <div className="nb-announcement-text-container">
-          <span className="nb-announcement-text" ref={textRef}>
-            The Category Leaderboard - Live Now
-          </span>
-          <span className="nb-announcement-text nb-announcement-text-clone" ref={textCloneRef}>
-            The Category Leaderboard - Live Now
-          </span>
-        </div>
-      </a>
-    </div>
-  );
-};
+//   return (
+//     <div className="nb-announcement-wrapper">
+//       <a 
+//         href="https://riseatseven.com/category-leaderboard/" 
+//         className="nb-announcement"
+//         ref={announcementRef}
+//         onMouseEnter={handleMouseEnter}
+//         onMouseLeave={handleMouseLeave}
+//       >
+//         <span className="nb-announcement-icon">🚨</span>
+//         <div className="nb-announcement-text-container">
+//           <span className="nb-announcement-text" ref={textRef}>
+//             The Category Leaderboard - Live Now
+//           </span>
+//           <span className="nb-announcement-text nb-announcement-text-clone" ref={textCloneRef}>
+//             The Category Leaderboard - Live Now
+//           </span>
+//         </div>
+//       </a>
+//     </div>
+//   );
+// };
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -497,10 +497,10 @@ export default function Navbar() {
       <div className="nb-main-wrapper">
         
         {/* Announcement Bar - উপরে */}
-        <AnnouncementBar 
+        {/* <AnnouncementBar 
           announcementRef={announcementRef} 
           hideAnnouncementBar={hideAnnouncementBar}
-        />
+        /> */}
 
         {/* Navbar Wrapper - নিচে */}
         <div className="nb-nav-wrapper">
