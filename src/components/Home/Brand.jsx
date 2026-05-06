@@ -73,7 +73,7 @@ const Brand = () => {
     const track = trackRef.current;
     if (!track) return;
 
-    const totalWidth = track.scrollWidth / 2; // half because we duplicated items
+    const totalWidth = track.scrollWidth 
 
     tweenRef.current = gsap.to(track, {
       x: `-=${totalWidth}`,

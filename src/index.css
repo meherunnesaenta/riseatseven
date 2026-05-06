@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 @layer base {
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-  
+
+
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -17,21 +19,21 @@
     background-color: #ffffff;
     color: #000000;
   }
-  
-  /* Original site er link hover effect */
+
+ 
   a {
     text-decoration: none;
     transition: all 0.2s ease;
   }
-  
-  /* Smooth scrolling for whole site */
+
+ 
   html {
     scroll-behavior: smooth;
   }
 }
 
 @layer components {
-  /* Container max-width exactly like original */
+  /* কাস্টম কন্টেইনার – মূল সাইটের মতো */
   .container-custom {
     max-width: 1280px;
     margin-left: auto;
@@ -39,14 +41,14 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   @media (min-width: 640px) {
     .container-custom {
       padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
-  
+
   @media (min-width: 1024px) {
     .container-custom {
       padding-left: 2rem;
@@ -54,11 +56,17 @@
     }
   }
 }
+
+
 .perspective-1000 {
   perspective: 1000px;
 }
 
 @keyframes wave {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }

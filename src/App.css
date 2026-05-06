@@ -1,0 +1,5 @@
+.h7-root h1, .h7-root h2, .h7-root h3, .h7-root h4 {
+  all: unset; 
+  display: block;
+  font-weight: 500;
+}
