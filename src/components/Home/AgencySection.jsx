@@ -294,6 +294,7 @@ export default function AgencySection() {
         /* BUTTONS CONTAINER */
         .as-desktop-buttons {
           display: none;
+          padding-top: 1rem;
           gap: 1rem;
         }
 

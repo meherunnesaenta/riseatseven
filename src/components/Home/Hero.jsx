@@ -99,10 +99,8 @@ export default function Hero() {
   return (
     <div>
       <style>{`
-        /* Google Fonts - Inter (মূল সাইটের মতো) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
-        /* রুট ভেরিয়েবল - মূল সাইট থেকে নেওয়া */
         :root {
           --font-sans-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           --font-weight-medium: 500;
@@ -117,6 +115,7 @@ export default function Hero() {
           position: relative;
           width: 100%;
           min-height: 100vh;
+          padding: 30px 0 0 0;
           overflow: hidden;
           font-family: var(--font-sans-primary);
           background-color: #000;
@@ -126,9 +125,9 @@ export default function Hero() {
           justify-content: center;
         }
 
-        /* ব্যাকগ্রাউন্ড ইমেজ - মূল সাইটের স্টাইল */
         .h7-bg {
           position: absolute;
+          border-radius: 0 0 50% 50% / 0 0 100% 100%;
           inset: 0;
           z-index: 0;
         }
@@ -144,7 +143,7 @@ export default function Hero() {
           transform: scale(1.05);
         }
 
-        /* মূল সাইটের মতো গ্রেডিয়েন্ট ওভারলে */
+       
         .h7-bg-overlay {
           position: absolute;
           inset: 0;
@@ -157,7 +156,7 @@ export default function Hero() {
           z-index: 1;
         }
 
-        /* কন্টেন্ট এরিয়া */
+        
         .h7-content {
           position: relative;
           z-index: 2;
@@ -171,7 +170,7 @@ export default function Hero() {
           justify-content: center;
         }
 
-        /* ব্যাজ সেকশন - টাইট ট্র্যাকিং সহ */
+       
         .h7-badge {
           display: flex;
           flex-direction: column;
@@ -181,7 +180,7 @@ export default function Hero() {
         }
 
         .h7-badge-label {
-          font-size: 0.75rem;
+          font-size: 0.85rem;
           font-weight: 500;
           letter-spacing: -0.025em;
           text-transform: uppercase;
@@ -381,9 +380,9 @@ export default function Hero() {
           <div className="h7-bg-overlay" />
         </div>
 
-        {/* কন্টেন্ট */}
+     
         <div className="h7-content">
-          {/* অ্যাওয়ার্ড ব্যাজ */}
+         {/* অ্যাওয়ার্ড ব্যাজ */}
           <div className="h7-badge" ref={badgeRef}>
             <span className="h7-badge-label">
               #1 MOST RECOMMENDED<br />CONTENT MARKETING AGENCY

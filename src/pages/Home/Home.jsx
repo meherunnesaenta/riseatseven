@@ -1,6 +1,5 @@
 // src/pages/Home.jsx
 import React from 'react';
-import AnnouncementBar from '../../components/shared/AnnouncementBar';
 import Navbar from '../../components/shared/Navbar';
 import Footer from '../../components/shared/Footer';
 import RiseAtSeven from '../../components/Home/RiseAtSeven';
@@ -16,7 +15,6 @@ import MarqueeBanner from '../../components/Home/Marqueebanner';
 const Home = () => {
   return (
     <div className="bg-grey-100">
-      <AnnouncementBar />
       <Navbar />
 
       {/* Hero */}
