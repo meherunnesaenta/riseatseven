@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import { IoIosArrowRoundForward } from "react-icons/io";
 export default function Footer() {
   const footerRef = useRef(null);
   const backgroundRef = useRef(null);
@@ -10,19 +10,18 @@ export default function Footer() {
       if (footerRef.current) {
         const rect = footerRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        
+
         if (rect.top < windowHeight && rect.bottom > 0) {
           const scrollProgress = Math.min(
             Math.max((windowHeight - rect.top) / (windowHeight + rect.height), 0),
             1
           );
-          
+
           if (contentRef.current) {
             contentRef.current.style.opacity = Math.min(scrollProgress * 1.5, 1);
           }
-          
+
           if (backgroundRef.current) {
-            // Background should only cover the top portion, not the whole footer
             const heightProgress = Math.min(scrollProgress * 0.5, 0.5);
             backgroundRef.current.style.height = `${99 + heightProgress * 30}%`;
           }
@@ -55,7 +54,7 @@ export default function Footer() {
 
   const navLinks2 = [
     { name: "Testimonials", url: "https://riseatseven.com/testimonials/" },
-    { name: "Blog", url: "https://riseatseven.com/blog/" },
+    { name: "Blog & Resources", url: "https://riseatseven.com/blog/" },
     { name: "Webinars", url: "https://riseatseven.com/webinars/" },
     { name: "Careers", url: "https://riseatseven.com/careers/" },
   ];
@@ -73,40 +72,61 @@ export default function Footer() {
       <style>{`
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
         
+        :root {
+          --color-mint: #B8F2E2;
+          --color-grey-900: #1A1A18;
+          --color-grey-400: #2A2A28;
+        }
+        
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
         
+        /* Footer Link Styles */
         .footer-link {
           transition: color 0.2s ease;
+          color: rgba(255, 255, 255, 0.6) !important;
+
         }
         
         .footer-link:hover {
-          color: var(--color-mint) !important;
+          text-decoration: underline;
+          underline-transition: color 0.2s ease;
         }
         
+        /* Social Link Styles */
         .social-link {
           transition: all 0.2s ease;
+          padding: 0.1rem  !important;
           background-color: white !important;
-          color: #111212 !important;
+          color: #1A1A18 !important;
+          text-decoration: none;
         }
         
         .social-link:hover {
           border-radius: 0.125rem !important;
           background-color: white !important;
-          color: #111212 !important;
+          color: #1A1A18 !important;
         }
         
+        /* Navigation Link Styles */
         .nav-link {
           position: relative;
           overflow: hidden;
           display: inline-block;
+          padding-left: 0.8rem !important;
+          color: white !important;
+          text-decoration: none;
+        }
+        
+        .nav-link:hover {
+          color: var(--color-mint) !important;
         }
         
         .nav-link .link-text {
-          transition: transform 0.2s ease;
+          transition: transform 0.3s ease;
           display: inline-block;
         }
         
@@ -119,13 +139,45 @@ export default function Footer() {
           top: 0;
           left: 0;
           transform: translateY(1.75rem);
-          transition: transform 0.2s ease;
+          transition: transform 0.3s ease;
         }
         
         .nav-link:hover .link-text-duplicate {
           transform: translateY(0);
         }
         
+        /* Newsletter Input Styles */
+        .newsletter-input {
+          background-color: #2A2A28 !important;
+          transition: all 0.2s ease;
+          border: none;
+          color: white;
+        }
+        
+        .newsletter-input:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(184, 242, 226, 0.3);
+        }
+        
+        .newsletter-input::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Submit Button Styles */
+        .submit-button {
+          background-color: var(--color-mint) !important;
+          color: #1A1A18 !important;
+          transition: all 0.2s ease;
+          border: none;
+          cursor: pointer;
+        }
+        
+        .submit-button:hover {
+          background-color: white !important;
+          transform: rotate(90deg);
+        }
+        
+        /* Animation */
         @keyframes fadeInUp {
           from {
             opacity: 0;
@@ -141,40 +193,73 @@ export default function Footer() {
           animation: fadeInUp 0.6s ease-out;
         }
         
+        /* Heading styles */
+        .footer-heading {
+          line-height: 1.2;
+          font-weight: 500;
+          letter-spacing: -0.035em;
+        }
+        
+        @media (min-width: 1280px) {
+          .footer-heading {
+            line-height: 1.2;
+          }
+        }
+        
         /* Newsletter input styles */
         .newsletter-input {
-          background-color: #2a2a2a !important;
-          transition: all 0.2s ease;
-          border: none;
+          font-size: 1.125rem;
+          line-height: 1.2;
+          padding: 1rem 1.25rem;
         }
         
-        .newsletter-input:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
+        @media (min-width: 1024px) {
+          .newsletter-input {
+            font-size: 1.25rem;
+            line-height: 1.2;
+            padding: 1.25rem 1.5rem;
+          }
         }
         
-        .newsletter-input::placeholder {
-          color: rgba(255,255,255,0.5);
+        /* Nav link text size */
+        .nav-link-text {
+          font-size: 1rem;
+          line-height: 1.2;
+          font-weight: 500;
+          letter-spacing: -0.035em;
         }
         
-        /* Submit button styles */
-        .submit-button {
-          background-color: var(--color-mint)!important;
-          color: #111212 !important;
-          transition: all 0.2s ease;
-          border: none;
-          cursor: pointer;
+        @media (min-width: 1024px) {
+          .nav-link-text {
+            font-size: 1rem;
+            line-height: 1.2;
+          }
         }
         
-        .submit-button:hover {
-          background-color: white !important;
-          transform: rotate(90deg);
+        /* Social link text */
+        .social-link-text {
+          font-size: 0.75rem;
+          line-height: 1.2;
+        }
+        
+        /* Footer legal text */
+        .footer-legal-text {
+          font-size: 0.75rem;
+          line-height: 1.2;
+          font-weight: 300;
+        }
+        
+        @media (min-width: 768px) {
+          .footer-legal-text {
+            font-size: 0.75rem;
+          }
         }
         
         /* Desktop Layout */
         @media (min-width: 1024px) {
           .nav-column {
             width: auto !important;
+            min-width: 1/5th of the container;
           }
         }
         
@@ -192,22 +277,25 @@ export default function Footer() {
         
         /* Mobile Layout */
         @media (max-width: 767px) {
+          .footer-wrapper {
+            padding: 0 12px !important;
+          }
+          
           .footer-content {
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
+            padding: 2rem 1rem 1.5rem !important;
           }
           
           .nav-column {
             width: 100% !important;
-            border-left: none !important;
-            padding-left: 0 !important;
+            
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 1rem;
+            margin-top: 0.5rem;
           }
           
           .nav-column:first-child {
             border-top: none;
             padding-top: 0;
+            margin-top: 0;
           }
           
           .footer-legal {
@@ -221,22 +309,19 @@ export default function Footer() {
           }
           
           .bottom-footer {
+            flex-direction: column-reverse !important;
             align-items: flex-start !important;
+            gap: 1rem;
+            margin-top: 1rem !important;
           }
           
           .social-links {
-            margin-bottom: 1rem;
-          }
-          
-          .newsletter-input {
-            font-size: 1rem !important;
-            padding: 0.875rem 1rem !important;
+            margin-bottom: 0.5rem;
           }
           
           .submit-button {
             width: 2.5rem !important;
             height: 2.5rem !important;
-            font-size: 0.875rem !important;
           }
         }
         
@@ -246,90 +331,90 @@ export default function Footer() {
             padding: 0.375rem 0.75rem !important;
             font-size: 0.75rem !important;
           }
-          
-          .nav-link {
-            font-size: 1rem !important;
-          }
         }
       `}</style>
 
-      <section className="w-full py-0 relative" id="footer" ref={footerRef}>
+      <section className="w-full relative footer-wrapper bg-black mt-8 lg:mt-0 rounded-2xl" id="footer" ref={footerRef}>
         <div className="w-full px-0 relative">
-          {/* Background Effect - Only behind content, not covering everything */}
+          {/* Background Effect */}
           <div
-            className="absolute top-0 left-0 right-0 pointer-events-none"
+            className="absolute top-0 left-0 right-0 pointer-events-none footer-background"
             ref={backgroundRef}
             style={{ height: "40%", zIndex: 0 }}
           >
-            <div className="w-full h-full bg-[#111212] rounded-3xl mx-2"></div>
+            <div className="w-full h-full bg-grey-900 mx-2 rounded-3xl"></div>
           </div>
 
-          {/* Content - Higher z-index to stay above background */}
+          {/* Main Content */}
           <div
-            className="relative z-10 pt-14 pb-6 lg:py-10 px-4 md:px-7 footer-content"
+            className="relative z-10 footer-content"
             ref={contentRef}
-            style={{ opacity: 0.6387 }}
+            style={{
+              maxWidth: "1280px",
+              padding: "1.5rem .81rem",
+              
+            }}
           >
-            <div className="grid grid-cols-12 gap-x-3 md:gap-x-5 gap-y-6 md:gap-y-7">
-              {/* Left Column - Newsletter & Social */}
-              <div className="flex flex-col items-start justify-start col-span-12 lg:col-span-4 gap-y-4 md:gap-y-5">
-                <h2 className="text-white text-2xl lg:text-3xl font-medium tracking-tight">
+            <div className="grid grid-cols-12 gap-x-3 md:gap-x-5 gap-y-3 md:gap-y-7">
+
+              {/* Newsletter Column */}
+              <div className="flex flex-wrap items-start justify-start col-span-12 lg:col-span-4 gap-y-3 md:gap-y-5">
+                <h2 className="footer-heading text-xl text-white">
                   Stay updated with Rise news
                 </h2>
 
-                {/* Newsletter Form */}
                 <form className="w-full relative">
                   <input
                     type="email"
                     required
                     name="email"
-                    className="appearance-none transition newsletter-input rounded-full w-full text-white font-medium tracking-tight leading-none text-base md:text-lg lg:text-xl px-4 py-3 md:px-5 md:py-4 lg:px-6 lg:py-5 placeholder:text-white/50 focus:outline-none"
+                    className="appearance-none transition newsletter-input rounded-full w-full h-0.5  text-white placeholder:text-white/50 placeholder:text-sm focus:outline-none"
                     placeholder="Your Email Address"
                   />
-                  <div className="absolute top-0 right-0 p-1.5 md:p-2">
+                  <div className="absolute top-0 right-0 p-2">
                     <button
                       type="submit"
-                      className="w-8 h-8 md:w-9 md:h-9 lg:w-13 lg:h-13 submit-button text-sm md:text-md lg:text-lg rounded-full flex items-center justify-center cursor-pointer transition"
+                      className="w-5 h-5 lg:w-10 lg:h-10 submit-button text-md lg:text-lg rounded-full flex items-center justify-center cursor-pointer transition"
                     >
-                      <i className="fa-regular fa-sharp fa-arrow-up-right" aria-hidden="true"></i>
+                     <IoIosArrowRoundForward className="rotate-[-40deg]" />
                     </button>
                   </div>
                 </form>
 
-                {/* Social Links */}
-                <div className="flex gap-1.5 flex-wrap social-links">
+                <div className="flex gap-1 flex-wrap social-links">
                   {socialLinks.map((social) => (
                     <a
                       key={social.name}
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-x-2 rounded-lg md:rounded-xl text-xs px-1.5 py-1 md:px-2 md:py-1 transition hover:rounded-sm bg-white text-grey-900 social-link"
+                      className="inline-flex items-center gap-x-2 rounded-xl text-xs transition hover:rounded-sm bg-white text-grey-900 social-link"
                     >
-                      <div className="inline-flex items-center gap-x-0.5">
-                        <i className={social.icon} aria-hidden="true"></i>
-                      </div>
-                      <i className="fa-regular fa-sharp fa-arrow-up-right text-[10px] md:text-xs" aria-hidden="true"></i>
+                      <i className={social.icon} aria-hidden="true"></i>
+                      <IoIosArrowRoundForward className="rotate-[-40deg]" />
                     </a>
                   ))}
                 </div>
               </div>
 
               {/* Navigation Columns */}
-              <div className="flex justify-between col-span-12 flex-wrap md:flex-row lg:col-span-7 lg:col-start-5 gap-y-6 md:gap-y-8">
+              <div className="flex justify-between col-span-12 flex-wrap md:flex-row lg:col-span-6 lg:col-start-6 gap-y-10">
+
                 {/* Column 1 */}
-                <div className="flex flex-col items-start gap-y-2 md:gap-y-1.5 border-l border-white/20 pl-3 nav-column">
+                <div className="flex flex-col items-start gap-y-1    nav-column">
                   {navLinks1.map((link) => (
                     <a
                       key={link.name}
                       href={link.url}
-                      className="group inline-flex text-white font-medium tracking-tight leading-tight text-base md:text-lg lg:text-xl hover:text-[#4ade80] transition-colors nav-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex text-white font-medium tracking-tight leading-tight nav-link-text nav-link"
                     >
                       <div className="relative overflow-hidden">
-                        <div className="transition transform group-hover:-translate-y-6 md:group-hover:-translate-y-7 link-text">
+                        <div className="transition duration-300 transform group-hover:-translate-y-7 link-text">
                           {link.name}
                         </div>
-                        <div className="transition absolute top-0 left-0 translate-y-6 md:translate-y-7 group-hover:translate-y-0 link-text-duplicate">
+                        <div className="transition duration-300 absolute top-0 left-0 translate-y-7 group-hover:translate-y-0 link-text-duplicate">
                           {link.name}
                         </div>
                       </div>
@@ -338,18 +423,20 @@ export default function Footer() {
                 </div>
 
                 {/* Column 2 */}
-                <div className="flex flex-col items-start gap-y-2 md:gap-y-1.5 border-l border-white/20 pl-3 nav-column">
+                <div className="flex flex-col items-start gap-y-1  md:w-auto nav-column">
                   {navLinks2.map((link) => (
                     <a
                       key={link.name}
                       href={link.url}
-                      className="group inline-flex text-white font-medium tracking-tight leading-tight text-base md:text-lg lg:text-xl hover:text-[#4ade80] transition-colors nav-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex text-white font-medium tracking-tight leading-tight nav-link-text nav-link"
                     >
                       <div className="relative overflow-hidden">
-                        <div className="transition transform group-hover:-translate-y-6 md:group-hover:-translate-y-7 link-text">
+                        <div className="transition duration-300 transform group-hover:-translate-y-7 link-text">
                           {link.name}
                         </div>
-                        <div className="transition absolute top-0 left-0 translate-y-6 md:translate-y-7 group-hover:translate-y-0 link-text-duplicate">
+                        <div className="transition duration-300 absolute top-0 left-0 translate-y-7 group-hover:translate-y-0 link-text-duplicate">
                           {link.name}
                         </div>
                       </div>
@@ -358,18 +445,20 @@ export default function Footer() {
                 </div>
 
                 {/* Column 3 */}
-                <div className="flex flex-col items-start gap-y-2 md:gap-y-1.5 border-l border-white/20 pl-3 nav-column">
+                <div className="flex flex-col items-start gap-y-1 nav-column">
                   {navLinks3.map((link) => (
                     <a
                       key={link.name}
                       href={link.url}
-                      className="group inline-flex text-white font-medium tracking-tight leading-tight text-base md:text-lg lg:text-xl hover:text-[#4ade80] transition-colors nav-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex text-white font-medium tracking-tight leading-tight nav-link-text nav-link"
                     >
                       <div className="relative overflow-hidden">
-                        <div className="transition transform group-hover:-translate-y-6 md:group-hover:-translate-y-7 link-text">
+                        <div className="transition duration-300 transform group-hover:-translate-y-7 link-text">
                           {link.name}
                         </div>
-                        <div className="transition absolute top-0 left-0 translate-y-6 md:translate-y-7 group-hover:translate-y-0 link-text-duplicate">
+                        <div className="transition duration-300 absolute top-0 left-0 translate-y-7 group-hover:translate-y-0 link-text-duplicate">
                           {link.name}
                         </div>
                       </div>
@@ -378,10 +467,15 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Logo SVG - Clean white */}
-              <div className="col-span-12 mt-8 md:mt-10 lg:mt-32">
+
+            </div>
+            <div className="h-10 md:h-19 lg:h-25"></div>
+
+            <div className="grid grid-cols-12 gap-x-3 md:gap-x-5 gap-y-3 md:gap-y-7 ">
+              {/* Logo SVG */}
+              <div className="col-span-12 mt-50">
                 <svg
-                  className="w-auto h-auto max-w-[180px] md:max-w-[250px] lg:max-w-full fill-white"
+                  className="w-full h-full object-contain fill-current text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 168 21"
                 >
@@ -403,51 +497,56 @@ export default function Footer() {
               </div>
 
               {/* Bottom Footer */}
-              <div className="col-span-12 flex justify-between flex-col mt-8 md:mt-10 items-start md:items-end md:flex-row lg:items-center bottom-footer">
-                <div className="flex gap-x-2 gap-y-2 flex-wrap items-start md:items-center footer-legal">
-                  <div className="text-white font-light leading-tight text-xs md:text-xs">
+              <div className="col-span-12 flex justify-between flex-col mt-10 items-end md:flex-row lg:items-center lg:mt-0 bottom-footer">
+                <div className="flex gap-x-2 gap-y-2 flex-wrap items-center md:gap-3 footer-legal">
+                  <span className="text-white font-light leading-tight footer-legal-text">
                     © 2025 Rise at Seven Ltd. All rights reserved
-                  </div>
-                  <div className="w-1 h-1 rounded-full bg-white inline-flex dot-separator"></div>
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-white/40 dot-separator"></span>
 
-                  <div className="text-white font-light leading-tight text-xs md:text-xs">
+                  <span className="text-white font-light leading-tight footer-legal-text">
                     Company Number 11955187
-                  </div>
-                  <div className="w-1 h-1 rounded-full bg-white inline-flex dot-separator"></div>
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-white/40 dot-separator"></span>
 
-                  <div className="text-white font-light leading-tight text-xs md:text-xs">
+                  <span className="text-white font-light leading-tight footer-legal-text">
                     VAT Registered GB 322402945
-                  </div>
-                  <div className="w-1 h-1 rounded-full bg-white inline-flex dot-separator"></div>
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-white/40 dot-separator"></span>
 
                   <a
                     href="https://riseatseven.com/privacy-policy/"
-                    className="text-white font-light leading-tight text-xs md:text-xs hover:text-[#4ade80] transition-colors footer-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white font-light leading-tight footer-legal-text footer-link"
                   >
                     Privacy Policy
                   </a>
-                  <div className="w-1 h-1 rounded-full bg-white inline-flex dot-separator"></div>
+                  <span className="w-1 h-1 rounded-full bg-white/40 dot-separator"></span>
 
                   <a
                     href="https://riseatseven.com/terms-conditions/"
-                    className="text-white font-light leading-tight text-xs md:text-xs hover:text-[#4ade80] transition-colors footer-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white font-light leading-tight footer-legal-text footer-link"
                   >
                     Terms &amp; conditions
                   </a>
                 </div>
 
-                <div className="w-full mt-2 md:mt-0 md:ml-auto md:text-right lg:w-auto">
+                <div className="w-full mt-1 md:ml-auto md:text-right lg:mt-0 lg:w-auto">
                   <a
                     href="https://madebyshape.co.uk"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white font-light leading-tight text-xs md:text-xs hover:text-[#4ade80] transition-colors footer-link"
+                    className="text-white font-light leading-tight footer-legal-text footer-link"
                   >
                     Website MadeByShape
                   </a>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>

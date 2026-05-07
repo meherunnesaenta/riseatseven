@@ -20,7 +20,7 @@ const Home = () => {
       {/* Hero */}
       <Hero />
 
-      {/* Brand - আসল সাইটে এখানে কোনো অতিরিক্ত প্যাডিং/মার্জিন নেই */}
+      {/* Brand */}
       <Brand />
 
       {/* Agency Section */}
