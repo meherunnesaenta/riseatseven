@@ -24,40 +24,35 @@ const Home = () => {
       <Brand />
 
       {/* Agency Section */}
-      <div className="py-12 xl:py-24">
+
         <AgencySection />
-      </div>
+     
 
       {/* Feature Card */}
-      <div className="pb-12 xl:pb-24">
+      
         <FeatureCard />
-      </div>
+
 
       {/* Our Services */}
-      <div className="pb-12 xl:pb-24">
+   
         <OurServices />
-      </div>
+   
 
       {/* Marquee Banner */}
       <MarqueeBanner />
 
       {/* Stacked Cards Scroll */}
-      <div className="pb-12 xl:pb-24">
         <StackedCardsScroll />
-      </div>
-
+    
       {/* What's New */}
-      <div className="pb-12 xl:pb-24">
         <WhatsNew />
-      </div>
+      
 
       {/* Rise at Seven Section */}
       <RiseAtSeven />
 
       {/* Footer */}
-      <div className="mt-8 lg:mt-0">
         <Footer />
-      </div>
     </div>
   );
 };
