@@ -130,11 +130,8 @@ export default function RiseAtSeven() {
         
         @media (max-width: 768px) {
           .rise-section {
-            padding: .5rem;
-            
-          }
-            .rise-heading-wrapper {
             display: none;
+            
           }
         }
         

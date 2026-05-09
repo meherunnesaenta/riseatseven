@@ -2,15 +2,119 @@ import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 const NAV_LINKS = [
-  { label: "Services", hasDropdown: true, href: "/services/" },
-  { label: "Industries", hasDropdown: true, href: "/services/b2b-marketing/" },
-  { label: "International", hasDropdown: true, href: "/international/" },
-  { label: "About", hasDropdown: true, href: "/about/" },
+  { label: "Services", hasDropdown: true, href: "/services/", dropdownId: 102 },
+  { label: "Industries", hasDropdown: true, href: "/services/b2b-marketing/", dropdownId: 23929 },
+  { label: "International", hasDropdown: true, href: "/international/", dropdownId: 103 },
+  { label: "About", hasDropdown: true, href: "/about/", dropdownId: 16913 },
   { label: "Work", href: "/work/", badge: "25" },
   { label: "Careers", href: "/careers/" },
-  { label: "Blog", href: "/blog/" },
+  { label: "Blog & Resources", hasDropdown: true, href: "/blog/", dropdownId: 106 },
   { label: "Webinar", href: "/webinars/" },
 ];
+
+// Mega Menu Data
+const MEGA_MENUS = {
+  102: {
+    columns: [
+      {
+        title: "Core Services",
+        links: [
+          { name: "Search & Growth Strategy", url: "/services/strategy-growth/" },
+          { name: "Onsite SEO", url: "/services/onsite-seo/" },
+          { name: "Content Experience", url: "/services/content-experience/" },
+          { name: "B2B Marketing", url: "/services/b2b-marketing/" }
+        ]
+      },
+      {
+        title: "",
+        links: [
+          { name: "Digital PR", url: "/services/digital-pr/" },
+          { name: "Social Media & Campaigns", url: "/services/social/" },
+          { name: "Data & Insights", url: "/services/data-insights/" },
+          { name: "Social SEO/Search", url: "/services/social-seo-tiktok-youtube/" }
+        ]
+      }
+    ],
+    imageMap: {
+      0: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-23.14.49.png?w=400&h=400&q=80&fm=webp&fit=crop",
+      1: "https://rise-atseven.transforms.svdcdn.com/production/images/WhatsApp-Image-2025-06-03-at-08.34.50.jpeg?w=400&h=400&q=80&fm=webp&fit=crop",
+      2: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-23.16.14.png?w=400&h=400&q=80&fm=webp&fit=crop",
+      3: "https://rise-atseven.transforms.svdcdn.com/production/images/0B5A6875.jpg?w=400&h=400&q=80&fm=webp&fit=crop",
+      4: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-22.39.35.png?w=400&h=400&q=80&fm=webp&fit=crop",
+      5: "https://rise-atseven.transforms.svdcdn.com/production/images/temp_image_43CEDE6C-4430-479F-9DBF-B348FA9AC991.WEBP?w=400&h=400&q=80&fm=webp&fit=crop",
+      6: "https://rise-atseven.transforms.svdcdn.com/production/images/data.jpg?w=400&h=400&q=80&fm=webp&fit=crop",
+      7: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-09-24-at-11.47.25.png?w=400&h=400&q=80&fm=webp&fit=crop"
+    }
+  },
+  23929: {
+    columns: [
+      {
+        title: "",
+        links: [
+          { name: "B2B Marketing", url: "/services/b2b-marketing/" }
+        ]
+      }
+    ],
+    imageMap: {
+      0: "https://rise-atseven.transforms.svdcdn.com/production/images/0B5A6875.jpg?w=400&h=400&q=80&fm=webp&fit=crop"
+    }
+  },
+  103: {
+    columns: [
+      {
+        title: "",
+        links: [
+          { name: "US Digital PR", url: "/international/us-digital-pr/" },
+          { name: "Spain Digital PR", url: "/international/us-digital-pr/spain-digital-pr/" },
+          { name: "Germany Digital PR", url: "/germany-digital-pr/" },
+          { name: "Netherlands Digital PR", url: "/netherlands-digital-pr/" }
+        ]
+      }
+    ],
+    imageMap: {
+      0: "https://rise-atseven.transforms.svdcdn.com/production/images/d4df0d30-d590-4e94-9056-9491f4beacba.JPG?w=400&h=400&q=80&fm=webp&fit=crop",
+      1: "https://rise-atseven.transforms.svdcdn.com/production/images/Logos_2026-04-23-101020_frxy.jpg?w=400&h=400&q=80&fm=webp&fit=crop",
+      2: "https://rise-atseven.transforms.svdcdn.com/production/images/27.jpg?w=400&h=400&q=80&fm=webp&fit=crop",
+      3: "https://rise-atseven.transforms.svdcdn.com/production/images/Logos_2026-04-23-095313_xfhk.jpg?w=400&h=400&q=80&fm=webp&fit=crop"
+    }
+  },
+  16913: {
+    columns: [
+      {
+        title: "",
+        links: [
+          { name: "About Us", url: "/about/" },
+          { name: "Meet The Risers", url: "/meet-the-team/" },
+          { name: "Culture", url: "/culture/" },
+          { name: "Testimonials", url: "/testimonials/" }
+        ]
+      }
+    ],
+    imageMap: {
+      0: "https://rise-atseven.transforms.svdcdn.com/production/images/0B5A7487.jpg?w=400&h=400&q=80&fm=webp&fit=crop",
+      1: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-23.14.49.png?w=400&h=400&q=80&fm=webp&fit=crop",
+      2: "https://rise-atseven.transforms.svdcdn.com/production/images/IMG_4280-2.jpg?w=400&h=400&q=80&fm=webp&fit=crop",
+      3: "https://rise-atseven.transforms.svdcdn.com/production/images/d4df0d30-d590-4e94-9056-9491f4beacba.JPG?w=400&h=400&q=80&fm=webp&fit=crop"
+    }
+  },
+  106: {
+    columns: [
+      {
+        title: "",
+        links: [
+          { name: "Blog", url: "/blog/" },
+          { name: "Category Leaderboard", url: "/category-leaderboard/" },
+          { name: "Multi-Channel Search Report", url: "/multi-channel-search-report-2026-/" }
+        ]
+      }
+    ],
+    imageMap: {
+      0: "https://rise-atseven.transforms.svdcdn.com/production/images/987a2051e11c80faa2a669c0eb61c514c7cc2314.png?w=400&h=400&q=80&fm=webp&fit=crop",
+      1: "https://rise-atseven.transforms.svdcdn.com/production/images/RA7-CL-VERSION-1-3-1_2026-05-05-132743_kfxk.png?w=400&h=400&q=80&fm=webp&fit=crop",
+      2: "https://rise-atseven.transforms.svdcdn.com/production/images/homepage-image.jpg?w=400&h=400&q=80&fm=webp&fit=crop"
+    }
+  }
+};
 
 // Rise at Seven Original SVG Logo
 const RiseLogo = ({ scrolled }) => (
@@ -33,63 +137,120 @@ const RiseLogo = ({ scrolled }) => (
 );
 
 // Announcement Bar Component
-// const AnnouncementBar = ({ announcementRef, hideAnnouncementBar }) => {
-//   const textRef = useRef(null);
-//   const textCloneRef = useRef(null);
+const AnnouncementBar = ({ hideAnnouncementBar }) => {
+  const textRef = useRef(null);
+  const textCloneRef = useRef(null);
 
-//   useEffect(() => {
-//     if (textRef.current && textCloneRef.current) {
-//       const ctx = gsap.context(() => {
-//         gsap.set(textCloneRef.current, { y: 24 });
-//       });
-//       return () => ctx.revert();
-//     }
-//   }, []);
+  useEffect(() => {
+    if (textRef.current && textCloneRef.current) {
+      gsap.set(textCloneRef.current, { y: 24 });
+    }
+  }, []);
 
-//   const handleMouseEnter = () => {
-//     if (textRef.current && textCloneRef.current) {
-//       gsap.to(textRef.current, { y: -24, duration: 0.3, ease: "power2.inOut" });
-//       gsap.to(textCloneRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
-//     }
-//   };
+  const handleMouseEnter = () => {
+    if (textRef.current && textCloneRef.current) {
+      gsap.to(textRef.current, { y: -24, duration: 0.3, ease: "power2.inOut" });
+      gsap.to(textCloneRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
+    }
+  };
 
-//   const handleMouseLeave = () => {
-//     if (textRef.current && textCloneRef.current) {
-//       gsap.to(textRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
-//       gsap.to(textCloneRef.current, { y: 24, duration: 0.3, ease: "power2.inOut" });
-//     }
-//   };
+  const handleMouseLeave = () => {
+    if (textRef.current && textCloneRef.current) {
+      gsap.to(textRef.current, { y: 0, duration: 0.3, ease: "power2.inOut" });
+      gsap.to(textCloneRef.current, { y: 24, duration: 0.3, ease: "power2.inOut" });
+    }
+  };
 
-//   if (hideAnnouncementBar) return null;
+  if (hideAnnouncementBar) return null;
 
-//   return (
-//     <div className="nb-announcement-wrapper">
-//       <a 
-//         href="https://riseatseven.com/category-leaderboard/" 
-//         className="nb-announcement"
-//         ref={announcementRef}
-//         onMouseEnter={handleMouseEnter}
-//         onMouseLeave={handleMouseLeave}
-//       >
-//         <span className="nb-announcement-icon">🚨</span>
-//         <div className="nb-announcement-text-container">
-//           <span className="nb-announcement-text" ref={textRef}>
-//             The Category Leaderboard - Live Now
-//           </span>
-//           <span className="nb-announcement-text nb-announcement-text-clone" ref={textCloneRef}>
-//             The Category Leaderboard - Live Now
-//           </span>
-//         </div>
-//       </a>
-//     </div>
-//   );
-// };
+  return (
+    <div className="nb-announcement-wrapper">
+      <a 
+        href="https://riseatseven.com/category-leaderboard/" 
+        className="nb-announcement"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <span className="nb-announcement-icon"></span>
+        <div className="nb-announcement-text-container">
+          <span className="nb-announcement-text" ref={textRef}>
+           🚨 The Category Leaderboard - Live Now
+          </span>
+          <span className="nb-announcement-text nb-announcement-text-clone" ref={textCloneRef}>
+           🚨 The Category Leaderboard - Live Now
+          </span>
+        </div>
+      </a>
+    </div>
+  );
+};
+
+// Mega Menu Component
+const MegaMenu = ({ id, isOpen, onMouseLeave, activeIndex, setActiveIndex }) => {
+  const menu = MEGA_MENUS[id];
+  const [activeImageId, setActiveImageId] = useState(0);
+  
+  if (!menu || !isOpen) return null;
+  
+  return (
+    <div 
+      className="nb-mega-menu"
+      onMouseLeave={onMouseLeave}
+      data-menu-id={id}
+    >
+      <div className="nb-mega-menu-inner">
+        <div className="nb-mega-menu-links">
+          <div className="nb-mega-menu-columns">
+            {menu.columns.map((column, colIdx) => (
+              <div key={colIdx} className="nb-mega-menu-column">
+                {column.title && <div className="nb-mega-menu-column-title">{column.title}</div>}
+                {column.links.map((link, linkIdx) => {
+                  const globalIdx = colIdx === 0 ? linkIdx : menu.columns[0].links.length + linkIdx;
+                  return (
+                    <a 
+                      key={linkIdx}
+                      href={link.url}
+                      className="nb-mega-menu-link"
+                      onMouseEnter={() => setActiveImageId(globalIdx)}
+                    >
+                      <div className="nb-mega-menu-link-text">{link.name}</div>
+                    </a>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="nb-mega-menu-image">
+          <div className="nb-mega-menu-image-inner">
+            <img 
+              src={menu.imageMap[activeImageId] || menu.imageMap[0]} 
+              alt="Menu visual"
+              className="nb-mega-menu-img"
+            />
+          </div>
+          {id === 102 && (
+            <div className="nb-mega-menu-button">
+              <a href="/services/" className="nb-mega-menu-cta">
+                View all services ↗
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hideAnnouncementBar, setHideAnnouncementBar] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const announcementRef = useRef(null);
+  const [openMegaMenu, setOpenMegaMenu] = useState(null);
+  const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
+  const [activeMegaImageIndex, setActiveMegaImageIndex] = useState(0);
+  
   const navRef = useRef(null);
   const hoverBgRef = useRef(null);
 
@@ -105,461 +266,620 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // এন্ট্রান্স অ্যানিমেশন
+  // Close mega menu on escape
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      if (announcementRef.current) {
-        tl.fromTo(
-          announcementRef.current,
-          { opacity: 0, y: -20 },
-          { opacity: 1, y: 0, duration: 0.6 }
-        );
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        setOpenMegaMenu(null);
       }
-
-      if (navRef.current) {
-        tl.fromTo(
-          navRef.current,
-          { opacity: 0, y: -12 },
-          { opacity: 1, y: 0, duration: 0.55 },
-          "-=0.2"
-        );
-      }
-    });
-
-    return () => ctx.revert();
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // হোভার ব্যাকগ্রাউন্ড আপডেট
-  const updateHoverBackground = (e, isHovering) => {
-    if (!hoverBgRef.current || !e?.target) return;
+  // এন্ট্রান্স অ্যানিমেশন
+ useEffect(() => {
+   const ctx = gsap.context(() => {
+     if (navRef.current) {
+       gsap.fromTo(
+         navRef.current,
+         { opacity: 0, y: -12 },
+         { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }
+       );
+     }
+   });
 
-    if (isHovering) {
-      const target = e.target.closest(".nb-link");
-      if (!target) return;
+   return () => ctx.revert();
+ }, []);
 
-      const container = hoverBgRef.current.parentElement;
-      if (!container) return;
+ // হোভার ব্যাকগ্রাউন্ড আপডেট
+ const updateHoverBackground = (e, isHovering, linkId) => {
+   if (!hoverBgRef.current || !e?.target) return;
 
-      const containerRect = container.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
+   if (isHovering) {
+     const target = e.target.closest(".nb-link");
+     if (!target) return;
 
-      hoverBgRef.current.style.width = `${targetRect.width + 16}px`;
-      hoverBgRef.current.style.left = `${targetRect.left - containerRect.left - 8}px`;
-      hoverBgRef.current.style.opacity = "1";
-    } else {
-      hoverBgRef.current.style.opacity = "0";
-    }
-  };
+     const container = hoverBgRef.current.parentElement;
+     if (!container) return;
 
-  // মোবাইল মেনু টগল
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
+     const containerRect = container.getBoundingClientRect();
+     const targetRect = target.getBoundingClientRect();
 
-  return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100;14..32,200;14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+     hoverBgRef.current.style.width = `${targetRect.width + 16}px`;
+     hoverBgRef.current.style.left = `${targetRect.left - containerRect.left - 8}px`;
+     hoverBgRef.current.style.opacity = "1";
+     setHoveredLinkIndex(linkId);
+     
+     if (linkId && NAV_LINKS[linkId]?.hasDropdown) {
+       setOpenMegaMenu(NAV_LINKS[linkId].dropdownId);
+     }
+   } else {
+     hoverBgRef.current.style.opacity = "0";
+     setHoveredLinkIndex(null);
+     setOpenMegaMenu(null);
+   }
+ };
 
-        :root {
-          --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          --color-mint: #a8f0dc;
-          --color-grey-900: #0a0a0a;
-        }
+ // মোবাইল মেনু টগল
+ useEffect(() => {
+   if (mobileMenuOpen) {
+     document.body.style.overflow = "hidden";
+   } else {
+     document.body.style.overflow = "";
+   }
+   return () => {
+     document.body.style.overflow = "";
+   };
+ }, [mobileMenuOpen]);
 
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+ // Desktop mega menu close on mouse leave
+ const handleMegaMenuLeave = () => {
+   setOpenMegaMenu(null);
+   setHoveredLinkIndex(null);
+   if (hoverBgRef.current) {
+     hoverBgRef.current.style.opacity = "0";
+   }
+ };
 
-        /* Main Wrapper - fixed position */
-        .nb-main-wrapper {
-          font-family: var(--font-primary);
-          position: fixed;
-          top: 0;
-          left: 0;
-          z-index: 100;
-          width: 100%;
-          pointer-events: auto;
-        }
+ return (
+   <>
+     <style>{`
+       @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100;14..32,200;14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
 
-        /* অ্যানাউন্সমেন্ট বার wrapper */
-        .nb-announcement-wrapper {
-          padding: 12px 12px 0 12px;
-          width: 100%;
-        }
+       :root {
+         --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         --color-mint: #a8f0dc;
+         --color-grey-900: #0a0a0a;
+         --color-grey-300: #b3b3b3;
+       }
 
-        .nb-announcement {
-          background: var(--color-mint);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          padding: 10px 1rem;
-         font-size: 0.85rem;
-          font-weight: 600;
-          letter-spacing: -0.01em;
-          color: var(--color-grey-900);
-          text-decoration: none;
-          border-radius: 16px;
-          transition: border-radius 0.25s ease;
-          cursor: pointer;
-          width: 100%;
-        }
+       * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+       }
 
-        .nb-announcement:hover {
-          border-radius: 8px;
-        }
+       /* Main Wrapper - fixed position */
+       .nb-main-wrapper {
+         font-family: var(--font-primary);
+         position: fixed;
+         top: 0;
+         left: 0;
+         z-index: 100;
+         width: 100%;
+         pointer-events: auto;
+       }
 
-        .nb-announcement-text-container {
-          position: relative;
-          overflow: hidden;
-          height: 20px;
-        }
+       /* Announcement Bar */
+       .nb-announcement-wrapper {
+         padding: 12px 12px 0 12px;
+         width: 100%;
+         transition: opacity 0.3s;
+       }
 
-        .nb-announcement-text {
-          display: block;
-          will-change: transform;
-        font-size: 0.85rem;
-          font-weight: 600;
-          white-space: nowrap;
-        }
+       .nb-announcement {
+         background: var(--color-mint);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         padding: 0.3rem 1rem;
+         font-size: 0.55rem;
+         font-weight: 600;
+         letter-spacing: -0.01em;
+         color: var(--color-grey-900);
+         text-decoration: none;
+         border-radius: 16px;
+         transition: border-radius 0.25s ease;
+         cursor: pointer;
+         width: 100%;
+       }
 
-        .nb-announcement-text-clone {
-          position: absolute;
-          top: 0;
-          left: 0;
-          will-change: transform;
-          font-size: 0.85rem;
-          font-weight: 600;
-          white-space: nowrap;
-        }
+       .nb-announcement:hover {
+         border-radius: 8px;
+       }
 
-        .nb-announcement-icon {
-          font-size: 0.875rem;
-        }
+       .nb-announcement-text-container {
+         position: relative;
+         overflow: hidden;
+         height: 20px;
+       }
 
-        /* Navbar wrapper */
-        .nb-nav-wrapper {
-          padding: 0 12px;
-          width: 100%;
-        }
+       .nb-announcement-text {
+         display: block;
+         will-change: transform;
+         font-size: 0.55rem;
+         font-weight: 600;
+         white-space: nowrap;
+       }
 
-        /* মেইন Navbar */
-        .nb-nav {
-          background: ${scrolled ? "rgba(255,255,255,0.85)" : "transparent"};
-          backdrop-filter: ${scrolled ? "blur(12px)" : "none"};
-          border-radius: 100px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 1rem 0 1.5rem;
-          height: 70px;
-          gap: 0.5rem;
-          transition: background 0.3s ease, backdrop-filter 0.3s ease;
-          box-shadow: ${scrolled ? "0 4px 20px rgba(0,0,0,0.05)" : "none"};
-        }
+       .nb-announcement-text-clone {
+         position: absolute;
+         top: 0;
+         left: 0;
+         will-change: transform;
+         font-size: 0.55rem;
+         font-weight: 600;
+         white-space: nowrap;
+       }
 
-        /* লোগো */
-        .nb-logo {
-          display: flex;
-          align-items: center;
-          flex-shrink: 0;
-          text-decoration: none;
-        }
+       .nb-announcement-icon {
+         font-size: 0.55rem;
+       }
 
-        /* নেভ লিংকস কন্টেইনার */
-        .nb-links-container {
-          position: relative;
-          display: flex;
-          align-items: center;
-          height: 100%;
-        }
+       /* Navbar wrapper */
+       .nb-nav-wrapper {
+         width: 100%;
+       }
 
-        /* হোভার ব্যাকগ্রাউন্ড */
-        .nb-hover-bg {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 38px;
-          background: ${scrolled ? "#e8e8e8" : "#ffffff"};
-          border-radius: 100px;
-          transition: width 0.25s ease, left 0.25s ease, opacity 0.2s;
-          opacity: 0;
-          pointer-events: none;
-        }
+       /* Main Navbar */
+       .nb-nav {
+         background: ${scrolled ? "rgba(255,255,255,0.85)" : "transparent"};
+         backdrop-filter: ${scrolled ? "blur(12px)" : "none"};
+         border-radius: 100px;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         padding: 0 1rem 0 1.5rem;
+         height: 70px;
+         gap: 0.5rem;
+         transition: background 0.3s ease, backdrop-filter 0.3s ease, transform 0.3s;
+         transform: translateY(${hideAnnouncementBar ? "0" : "48px"});
+         box-shadow: ${scrolled ? "0 4px 20px rgba(0,0,0,0.05)" : "none"};
+       }
 
-        /* লিংক স্টাইল */
-        .nb-links {
-          display: flex;
-          align-items: center;
-          gap: 0.2rem;
-          position: relative;
-          z-index: 2;
-        }
+       /* Logo */
+       .nb-logo {
+         display: flex;
+         align-items: center;
+         flex-shrink: 0;
+         text-decoration: none;
+       }
 
-        .nb-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 0.5rem 1rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          letter-spacing: -0.01em;
-          text-decoration: none;
-          border-radius: 100px;
-          transition: color 0.2s ease;
-          white-space: nowrap;
-          cursor: pointer;
-          color: ${scrolled ? "#0a0a0a" : "rgba(255,255,255,0.85)"};
-        }
+       /* Nav Links Container */
+       .nb-links-container {
+         position: relative;
+         display: flex;
+         align-items: center;
+         height: 100%;
+       }
 
-        .nb-link:hover {
-          color: ${scrolled ? "#0a0a0a" : "#0a0a0a"};
-        }
+       /* Hover Background */
+       .nb-hover-bg {
+         position: absolute;
+         top: 50%;
+         transform: translateY(-50%);
+         height: 38px;
+         background: ${scrolled ? "#e8e8e8" : "#ffffff"};
+         border-radius: 100px;
+         transition: width 0.25s ease, left 0.25s ease, opacity 0.2s;
+         opacity: 0;
+         pointer-events: none;
+       }
 
-        .nb-link-plus {
-          font-size: 0.7rem;
-          font-weight: 400;
-          opacity: 0.6;
-        }
+       /* Links */
+       .nb-links {
+         display: flex;
+         align-items: center;
+         gap: 0.2rem;
+         position: relative;
+         z-index: 2;
+       }
 
-        .nb-badge {
-          background: var(--color-mint);
-          color: var(--color-grey-900);
-          font-size: 0.65rem;
-          font-weight: 700;
-          border-radius: 20px;
-          padding: 0.15rem 0.5rem;
-          margin-left: 0.25rem;
-          line-height: 1.2;
-        }
+       .nb-link {
+         display: inline-flex;
+         align-items: center;
+         gap: 4px;
+         padding: 0.5rem 1rem;
+         font-size: 0.875rem;
+         font-weight: 500;
+         letter-spacing: -0.01em;
+         text-decoration: none;
+         border-radius: 100px;
+         transition: color 0.2s ease;
+         white-space: nowrap;
+         cursor: pointer;
+         color: ${scrolled ? "#0a0a0a" : "rgba(255,255,255,0.85)"};
+       }
 
-        .nb-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.6rem 1.25rem;
-          background: ${scrolled ? "#0e0e0e" : "#ffffff"};
-          color: ${scrolled ? "#ffffff" : "#0e0e0e"};
-          font-size: 0.875rem;
-          font-weight: 600;
-          letter-spacing: -0.01em;
-          border-radius: 100px;
-          text-decoration: none;
-          white-space: nowrap;
-          flex-shrink: 0;
-          transition: transform 0.2s ease, background 0.3s ease;
-          cursor: pointer;
-          border: none;
-        }
+       .nb-link:hover {
+         color: ${scrolled ? "#0a0a0a" : "#0a0a0a"};
+       }
 
-        .nb-cta:hover {
-          transform: scale(1.02);
-        }
+       .nb-link-plus {
+         font-size: 0.7rem;
+         font-weight: 400;
+         opacity: 0.6;
+       }
 
-        .nb-cta-arrow {
-          font-size: 0.75rem;
-          opacity: 0.7;
-        }
+       .nb-badge {
+         background: var(--color-mint);
+         color: var(--color-grey-900);
+         font-size: 0.65rem;
+         font-weight: 700;
+         border-radius: 20px;
+         padding: 0.15rem 0.5rem;
+         margin-left: 0.25rem;
+         line-height: 1.2;
+       }
 
-        .nb-hamburger {
-          display: none;
-          flex-direction: column;
-          justify-content: space-between;
-          width: 22px;
-          height: 16px;
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          z-index: 101;
-        }
+       /* CTA Button */
+       .nb-cta {
+         display: inline-flex;
+         align-items: center;
+         gap: 0.5rem;
+         padding: 0.6rem 1.25rem;
+         background: ${scrolled ? "#0e0e0e" : "#ffffff"};
+         color: ${scrolled ? "#ffffff" : "#0e0e0e"};
+         font-size: 0.875rem;
+         font-weight: 600;
+         letter-spacing: -0.01em;
+         border-radius: 100px;
+         text-decoration: none;
+         white-space: nowrap;
+         flex-shrink: 0;
+         transition: transform 0.2s ease, background 0.3s ease;
+         cursor: pointer;
+         border: none;
+       }
 
-        .nb-hamburger span {
-          width: 100%;
-          height: 2px;
-          background: ${scrolled ? "#0a0a0a" : "#ffffff"};
-          border-radius: 2px;
-          transition: all 0.3s ease;
-        }
+       .nb-cta:hover {
+         transform: scale(1.02);
+       }
 
-        .nb-hamburger.active span:first-child {
-          transform: rotate(45deg) translate(5px, 5px);
-        }
+       .nb-cta-arrow {
+         font-size: 0.75rem;
+         opacity: 0.7;
+       }
 
-        .nb-hamburger.active span:last-child {
-          transform: rotate(-45deg) translate(5px, -5px);
-        }
+       /* Hamburger */
+       .nb-hamburger {
+         display: none;
+         flex-direction: column;
+         justify-content: space-between;
+         width: 22px;
+         height: 16px;
+         background: transparent;
+         border: none;
+         cursor: pointer;
+         padding: 0;
+         z-index: 101;
+       }
 
-        .nb-mobile-menu {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100vh;
-          background: rgba(10, 10, 10, 0.96);
-          backdrop-filter: blur(12px);
-          z-index: 99;
-          padding: 100px 24px 40px;
-          overflow-y: auto;
-          transform: translateX(100%);
-          transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
+       .nb-hamburger span {
+         width: 100%;
+         height: 2px;
+         background: ${scrolled ? "#0a0a0a" : "#ffffff"};
+         border-radius: 2px;
+         transition: all 0.3s ease;
+       }
 
-        .nb-mobile-menu.open {
-          transform: translateX(0);
-        }
+       .nb-hamburger.active span:first-child {
+         transform: rotate(45deg) translate(5px, 5px);
+       }
 
-        .nb-mobile-link {
-          display: block;
-          color: #ffffff;
-          font-size: 2rem;
-          font-weight: 500;
-          letter-spacing: -0.03em;
-          text-decoration: none;
-          padding: 1rem 0;
-          border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
+       .nb-hamburger.active span:last-child {
+         transform: rotate(-45deg) translate(5px, -5px);
+       }
 
-        .nb-mobile-cta {
-          display: inline-block;
-          margin-top: 2rem;
-          background: #ffffff;
-          color: #0e0e0e;
-          padding: 0.8rem 1.5rem;
-          border-radius: 100px;
-          font-weight: 600;
-          text-decoration: none;
-        }
+       /* Mobile Menu */
+       .nb-mobile-menu {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100vh;
+         background: rgba(10, 10, 10, 0.96);
+         backdrop-filter: blur(12px);
+         z-index: 99;
+         padding: 100px 24px 40px;
+         overflow-y: auto;
+         transform: translateX(100%);
+         transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+       }
 
-        @media (max-width: 1023px) {
-          .nb-links-container {
-            display: none;
-          }
-          .nb-hamburger {
-            display: flex;
-          }
-          .nb-nav {
-            padding: 0 1rem;
-          }
-          .nb-cta {
-            display: none;
-          }
-        }
+       .nb-mobile-menu.open {
+         transform: translateX(0);
+       }
 
-        @media (min-width: 1024px) and (max-width: 1280px) {
-          .nb-link {
-            font-size: 0.8rem;
-            padding: 0.45rem 0.85rem;
-          }
-        }
+       .nb-mobile-link {
+         display: block;
+         color: #ffffff;
+         font-size: 2rem;
+         font-weight: 500;
+         letter-spacing: -0.03em;
+         text-decoration: none;
+         padding: 1rem 0;
+         border-bottom: 1px solid rgba(255,255,255,0.08);
+       }
 
-        @media (min-width: 1280px) {
-          .nb-announcement-text,
-          .nb-announcement-text-clone {
-            font-size: 0.875rem;
-          }
-          .nb-announcement-text-container {
-            height: 22px;
-          }
-          .nb-link {
-            font-size: 0.875rem;
-            padding: 0.5rem 1rem;
-          }
-        }
+       .nb-mobile-cta {
+         display: inline-block;
+         margin-top: 2rem;
+         background: #ffffff;
+         color: #0e0e0e;
+         padding: 0.8rem 1.5rem;
+         border-radius: 100px;
+         font-weight: 600;
+         text-decoration: none;
+       }
 
-        @media (max-width: 768px) {
-          .nb-announcement {
-            padding: 8px 0.8rem;
-          }
-          .nb-announcement-text,
-          .nb-announcement-text-clone {
-            font-size: 0.7rem;
-          }
-          .nb-announcement-text-container {
-            height: 18px;
-          }
-        }
-      `}</style>
+       /* Mega Menu */
+       .nb-mega-menu {
+         position: absolute;
+         top: 100%;
+         left: 50%;
+         transform: translateX(-50%);
+         margin-top: 10px;
+         background: white;
+         border-radius: 24px;
+         box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+         opacity: 0;
+         animation: megaMenuFadeIn 0.3s ease forwards;
+         pointer-events: auto;
+         z-index: 1000;
+       }
 
-      {/* Main Wrapper - সবকিছুর বাইরে */}
-      <div className="nb-main-wrapper">
+       @keyframes megaMenuFadeIn {
+         from {
+           opacity: 0;
+           transform: translateX(-50%) scale(0.95);
+         }
+         to {
+           opacity: 1;
+           transform: translateX(-50%) scale(1);
+         }
+       }
 
-        {/* Announcement Bar - উপরে */}
-        {/* <AnnouncementBar 
-          announcementRef={announcementRef} 
-          hideAnnouncementBar={hideAnnouncementBar}
-        /> */}
+       .nb-mega-menu-inner {
+         display: flex;
+         padding: 24px;
+         gap: 32px;
+       }
 
-        {/* Navbar Wrapper - নিচে */}
-        <div className="nb-nav-wrapper">
-          <nav className="nb-nav" ref={navRef}>
-            <a href="/" className="nb-logo">
-              <RiseLogo scrolled={scrolled} />
-            </a>
+       .nb-mega-menu-links {
+         padding: 0 24px;
+       }
 
-            <div className="nb-links-container">
-              <div className="nb-hover-bg" ref={hoverBgRef} />
-              <div className="nb-links">
-                {NAV_LINKS.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="nb-link"
-                    onMouseEnter={(e) => updateHoverBackground(e, true)}
-                    onMouseLeave={(e) => updateHoverBackground(e, false)}
-                  >
-                    {link.label}
-                    {link.hasDropdown && <span className="nb-link-plus">+</span>}
-                    {link.badge && <span className="nb-badge">{link.badge}</span>}
-                  </a>
-                ))}
-              </div>
-            </div>
+       .nb-mega-menu-columns {
+         display: flex;
+         gap: 48px;
+       }
 
-            <a href="/connect-with-us/" className="nb-cta">
-              Get in touch
-              <span className="nb-cta-arrow">↗</span>
-            </a>
+       .nb-mega-menu-column {
+         min-width: 200px;
+       }
 
-            <button
-              className={`nb-hamburger ${mobileMenuOpen ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span />
-              <span />
-            </button>
-          </nav>
-        </div>
+       .nb-mega-menu-column-title {
+         font-size: 0.875rem;
+         font-weight: 500;
+         color: var(--color-grey-300);
+         margin-bottom: 16px;
+         height: 32px;
+       }
 
-        {/* মোবাইল মেনু */}
-        <div className={`nb-mobile-menu ${mobileMenuOpen ? "open" : ""}`}>
-          {NAV_LINKS.map((link) => (
-            <a key={link.label} href={link.href} className="nb-mobile-link">
-              {link.label}
-              {link.badge && (
-                <span className="nb-badge" style={{ marginLeft: "8px" }}>
-                  {link.badge}
-                </span>
-              )}
-            </a>
-          ))}
-          <a href="/connect-with-us/" className="nb-mobile-cta">
-            Get in touch ↗
-          </a>
-        </div>
-      </div>
-    </>
-  );
+       .nb-mega-menu-link {
+         display: block;
+         text-decoration: none;
+         margin-bottom: 8px;
+         font-size: 1.125rem;
+         font-weight: 500;
+         color: #0a0a0a;
+         transition: color 0.2s;
+       }
+
+       .nb-mega-menu-link:hover {
+         color: #666;
+       }
+
+       .nb-mega-menu-link-text {
+         padding: 4px 0;
+       }
+
+       .nb-mega-menu-image {
+         width: 280px;
+         position: relative;
+       }
+
+       .nb-mega-menu-image-inner {
+         background: #1a1a1a;
+         border-radius: 16px;
+         overflow: hidden;
+         aspect-ratio: 1;
+       }
+
+       .nb-mega-menu-img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+       }
+
+       .nb-mega-menu-button {
+         position: absolute;
+         bottom: 16px;
+         left: 0;
+         right: 0;
+         padding: 0 16px;
+       }
+
+       .nb-mega-menu-cta {
+         display: block;
+         background: #1a1a1a;
+         color: white;
+         text-decoration: none;
+         padding: 12px 16px;
+         border-radius: 24px;
+         text-align: center;
+         font-weight: 500;
+         font-size: 0.875rem;
+         transition: background 0.2s;
+       }
+
+       .nb-mega-menu-cta:hover {
+         background: #333;
+       }
+
+       /* Responsive */
+       @media (max-width: 1023px) {
+         .nb-links-container {
+           display: none;
+         }
+         .nb-hamburger {
+           display: flex;
+         }
+         .nb-nav {
+           padding: 0 1rem;
+         }
+         .nb-cta {
+           display: none;
+         }
+         .nb-mega-menu {
+           display: none;
+         }
+       }
+
+       @media (min-width: 1024px) and (max-width: 1280px) {
+         .nb-link {
+           font-size: 0.8rem;
+           padding: 0.45rem 0.85rem;
+         }
+         .nb-mega-menu-column {
+           min-width: 180px;
+         }
+         .nb-mega-menu-link {
+           font-size: 1rem;
+         }
+       }
+
+       @media (min-width: 1280px) {
+         .nb-announcement-text,
+         .nb-announcement-text-clone {
+           font-size: 0.875rem;
+         }
+         .nb-announcement-text-container {
+           height: 22px;
+         }
+         .nb-link {
+           font-size: 0.875rem;
+           padding: 0.5rem 1rem;
+         }
+       }
+
+       @media (max-width: 768px) {
+         .nb-announcement {
+           padding: 8px 0.8rem;
+         }
+         .nb-announcement-text,
+         .nb-announcement-text-clone {
+           font-size: 0.7rem;
+         }
+         .nb-announcement-text-container {
+           height: 18px;
+         }
+         .nb-nav {
+           transform: translateY(${hideAnnouncementBar ? "0" : "40px"});
+         }
+       }
+     `}</style>
+
+     {/* Main Wrapper */}
+     <div className="nb-main-wrapper">
+
+       {/* Announcement Bar */}
+       <AnnouncementBar hideAnnouncementBar={hideAnnouncementBar} />
+
+       {/* Navbar */}
+       <div className="nb-nav-wrapper">
+         <nav className="nb-nav" ref={navRef}>
+           <a href="/" className="nb-logo">
+             <RiseLogo scrolled={scrolled} />
+           </a>
+
+           <div className="nb-links-container">
+             <div className="nb-hover-bg" ref={hoverBgRef} />
+             <div className="nb-links">
+               {NAV_LINKS.map((link, idx) => (
+                 <a
+                   key={link.label}
+                   href={link.href}
+                   className="nb-link"
+                   onMouseEnter={(e) => updateHoverBackground(e, true, idx)}
+                   onMouseLeave={(e) => updateHoverBackground(e, false, idx)}
+                 >
+                   {link.label}
+                   {link.hasDropdown && <span className="nb-link-plus">+</span>}
+                   <sup>{link.badge && <span className="nb-badge">{link.badge}</span>}</sup>
+                 </a>
+               ))}
+             </div>
+           </div>
+
+           <a href="/connect-with-us/" className="nb-cta">
+             Get in touch
+             <span className="nb-cta-arrow">↗</span>
+           </a>
+
+           <button
+             className={`nb-hamburger ${mobileMenuOpen ? "active" : ""}`}
+             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+           >
+             <span />
+             <span />
+           </button>
+         </nav>
+       </div>
+
+       {/* Mega Menu - Desktop */}
+       {NAV_LINKS.map((link, idx) => (
+         link.hasDropdown && (
+           <MegaMenu 
+             key={link.dropdownId}
+             id={link.dropdownId}
+             isOpen={openMegaMenu === link.dropdownId}
+             onMouseLeave={handleMegaMenuLeave}
+             activeIndex={activeMegaImageIndex}
+             setActiveIndex={setActiveMegaImageIndex}
+           />
+         )
+       ))}
+
+       {/* Mobile Menu */}
+       <div className={`nb-mobile-menu ${mobileMenuOpen ? "open" : ""}`}>
+         {NAV_LINKS.map((link) => (
+           <a key={link.label} href={link.href} className="nb-mobile-link">
+             {link.label}
+             {link.badge && (
+               <span className="nb-badge" style={{ marginLeft: "8px" }}>
+                 {link.badge}
+               </span>
+             )}
+           </a>
+         ))}
+         <a href="/connect-with-us/" className="nb-mobile-cta">
+           Get in touch ↗
+         </a>
+       </div>
+     </div>
+   </>
+ );
 }

@@ -111,11 +111,11 @@ export default function Hero() {
           --color-white: #ffffff;
         }
 
+        /* Hero Section Container - navbar এর সাথে attachment এর জন্য padding-top */
         .h7-root {
           position: relative;
           width: 100%;
           min-height: 100vh;
-          padding: 30px 0 0 0;
           overflow: hidden;
           font-family: var(--font-sans-primary);
           background-color: #000;
@@ -125,9 +125,22 @@ export default function Hero() {
           justify-content: center;
         }
 
+        /* Tablet এর জন্য adjustment */
+        @media (min-width: 768px) {
+          .h7-root {
+            padding-top: 10px;
+          }
+        }
+
+        /* Desktop এর জন্য adjustment - navbar কম্প্রেস হলে */
+        @media (min-width: 1024px) {
+          .h7-root {
+            padding-top: 10px;
+          }
+        }
+
         .h7-bg {
           position: absolute;
-          border-radius: 0 0 50% 50% / 0 0 100% 100%;
           inset: 0;
           z-index: 0;
         }
@@ -143,7 +156,6 @@ export default function Hero() {
           transform: scale(1.05);
         }
 
-       
         .h7-bg-overlay {
           position: absolute;
           inset: 0;
@@ -156,7 +168,6 @@ export default function Hero() {
           z-index: 1;
         }
 
-        
         .h7-content {
           position: relative;
           z-index: 2;
@@ -164,13 +175,10 @@ export default function Hero() {
           flex-direction: column;
           align-items: center;
           text-align: center;
-          padding: 4rem 1.5rem 2rem;
-          gap: 1.5rem;
           flex: 1;
           justify-content: center;
         }
 
-       
         .h7-badge {
           display: flex;
           flex-direction: column;
@@ -188,7 +196,7 @@ export default function Hero() {
           text-wrap: balance;
         }
 
-        /* অ্যাওয়ার্ড লোগো রো - মূল সাইটের মতো */
+        /* Awards Row */
         .h7-awards-row {
           display: flex;
           align-items: center;
@@ -210,7 +218,7 @@ export default function Hero() {
           opacity: 1;
         }
 
-        /* হেডিং - রেসপনসিভ সাইজ মূল সাইটের মতো */
+        /* Heading */
         .h7-heading {
           margin: 0;
           line-height: 0.9;
@@ -228,7 +236,6 @@ export default function Hero() {
           color: #fff;
         }
 
-        /* মিডিয়া কুয়েরি - মূল সাইটের responsive ব্রেকপয়েন্ট */
         @media (min-width: 768px) {
           .h7-heading .hw {
             font-size: clamp(3.75rem, 10vw, 6rem);
@@ -249,7 +256,7 @@ export default function Hero() {
           }
         }
 
-        /* ইনলাইন ইমেজ - মূল সাইটের মতো স্টাইল */
+        /* Inline Image */
         .h7-inline-img {
           width: clamp(60px, 8vw, 100px);
           height: clamp(60px, 8vw, 100px);
@@ -262,7 +269,6 @@ export default function Hero() {
           box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.4);
         }
 
-        /* .line2 - ফ্লেক্স লেআউট ঠিক রাখার জন্য */
         .h7-heading .line2 {
           display: inline-flex;
           align-items: center;
@@ -271,7 +277,7 @@ export default function Hero() {
           gap: 0.25em;
         }
 
-        /* সাবহেডিং */
+        /* Subheading */
         .h7-sub {
           font-size: clamp(1rem, 2.5vw, 1.5rem);
           font-weight: 500;
@@ -282,7 +288,7 @@ export default function Hero() {
           will-change: opacity, transform;
         }
 
-        /* ফুটার - মূল সাইটের মতো দুভাগে ভাগ করা */
+        /* Footer */
         .h7-footer {
           position: relative;
           z-index: 2;
@@ -325,7 +331,7 @@ export default function Hero() {
           color: #fff;
         }
 
-        /* ডটস ইন্ডিকেটর */
+        /* Dots Indicator */
         .h7-dots {
           display: flex;
           gap: 0.5rem;
@@ -345,7 +351,7 @@ export default function Hero() {
           transform: scale(1.25);
         }
 
-        /* মোবাইল অ্যাডজাস্টমেন্ট */
+        /* Mobile Adjustment */
         @media (max-width: 768px) {
           .h7-footer {
             flex-direction: column;
@@ -362,11 +368,17 @@ export default function Hero() {
             width: 38px;
             height: 38px;
           }
+          
+          .h7-root {
+            padding-top: 10px;
+          }
         }
+
       `}</style>
 
       <div className="h7-root" ref={containerRef}>
         
+        {/* Background Images */}
         <div className="h7-bg">
           {BG_IMAGES.map((img, i) => (
             <img
@@ -380,9 +392,9 @@ export default function Hero() {
           <div className="h7-bg-overlay" />
         </div>
 
-     
+        {/* Content */}
         <div className="h7-content">
-         {/* অ্যাওয়ার্ড ব্যাজ */}
+          {/* Awards Badge */}
           <div className="h7-badge" ref={badgeRef}>
             <span className="h7-badge-label">
               #1 MOST RECOMMENDED<br />CONTENT MARKETING AGENCY
@@ -394,6 +406,7 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* Main Heading */}
           <h1 className="h7-heading" ref={headingRef}>
             <span className="hw" style={{ fontWeight: 500 }}>We Create</span>
             <span className="hw line2" style={{ fontWeight: 500 }}>
@@ -403,16 +416,16 @@ export default function Hero() {
                 className="h7-inline-img"
                 src={BG_IMAGES[0].src}
                 alt="feature"
-                style={{ fontWeight: 'normal' }}  // ইমেজের জন্য ওয়েট নরমাল
+                style={{ fontWeight: 'normal' }}
               />
               Leaders
             </span>
           </h1>
 
-          {/* সাবহেডিং */}
+          {/* Subheading */}
           <p className="h7-sub" ref={subRef}>on every searchable platform</p>
 
-          {/* ডটস ইন্ডিকেটর */}
+          {/* Dots Indicator */}
           <div className="h7-dots">
             {BG_IMAGES.map((_, i) => (
               <div key={i} className={`h7-dot ${current === i ? "active" : ""}`} />
@@ -420,7 +433,7 @@ export default function Hero() {
           </div>
         </div>
 
-      
+        {/* Footer */}
         <div className="h7-footer" ref={footerRef}>
           <p className="h7-footer-text">
             Organic media planners creating, distributing & optimising{" "}

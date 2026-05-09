@@ -1,357 +1,605 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SERVICES = [
-  {
-    title: "Digital PR",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80",
-  },
-  {
-    title: "Organic Social & Content",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80",
-  },
-  {
-    title: "Search & Growth Strategy",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
-  },
-  {
-    title: "Content Experience",
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80",
-  },
-  {
-    title: "Data & Insights",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
-  },
-  {
-    title: "Onsite SEO",
-    image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=600&q=80",
-  },
-  {
-    title: "Social SEO & Search",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80",
-  },
-  {
-    title: "B2B Marketing",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80",
-  },
-];
-
-function ServiceRow({ service, index, isLeft }) {
-  const rowRef = useRef(null);
-  const bgRef = useRef(null);
-  const textRef = useRef(null);
-  const arrowRef = useRef(null);
-  const [hovered, setHovered] = useState(false);
-
-  const handleEnter = () => {
-    setHovered(true);
-    gsap.to(bgRef.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.45,
-      ease: "power2.out",
-    });
-    gsap.to(textRef.current, {
-      color: "#ffffff",
-      duration: 0.25,
-      ease: "power2.out",
-    });
-    gsap.to(arrowRef.current, {
-      opacity: 1,
-      x: 0,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
-
-  const handleLeave = () => {
-    setHovered(false);
-    gsap.to(bgRef.current, {
-      opacity: 0,
-      scale: 1.04,
-      duration: 0.4,
-      ease: "power2.inOut",
-    });
-    gsap.to(textRef.current, {
-      color: "#0a0a0a",
-      duration: 0.25,
-      ease: "power2.out",
-    });
-    gsap.to(arrowRef.current, {
-      opacity: 0,
-      x: -8,
-      duration: 0.25,
-      ease: "power2.in",
-    });
-  };
-
-  // Scroll entrance
-  useEffect(() => {
-    gsap.fromTo(
-      rowRef.current,
-      { opacity: 0, y: 24 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.55,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: rowRef.current,
-          start: "top 88%",
-          toggleActions: "play none none reverse",
-        },
-        delay: (index % 2) * 0.08,
-      }
-    );
-    // init arrow hidden
-    gsap.set(arrowRef.current, { opacity: 0, x: -8 });
-  }, []);
-
-  return (
-    <div
-      className="sv-row"
-      ref={rowRef}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-    >
-      {/* BG image */}
-      <div className="sv-row-bg" ref={bgRef}>
-        <img src={service.image} alt={service.title} />
-        <div className="sv-row-bg-overlay" />
-      </div>
-
-      {/* Text */}
-      <span className="sv-title" ref={textRef}>
-        {service.title}
-      </span>
-
-      {/* Arrow */}
-      <span className="sv-arrow" ref={arrowRef}>↗</span>
-    </div>
-  );
-}
-
 export default function OurServices() {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
+  const headingRef = useRef(null);
+  const buttonRef = useRef(null);
+  const serviceRowsRef = useRef([]);
+
+  // Service data (original HTML থেকে নেওয়া)
+  const services = [
+    {
+      title: "Digital PR",
+      slug: "digital-pr",
+      image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-22.39.35.png?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847626&s=ca4a2c3891fedbd3ca3a3d46af0e6362",
+      imageFull: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-22.39.35.png?w=2000&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847626&s=6d24f03cd6433d18ffdc18236cf7a648"
+    },
+    {
+      title: "Organic Social & Content",
+      slug: "social",
+      image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-07-01-at-20.31.18.png?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751398338&s=6dc7a97684078dc9cbe75679b4093ef5",
+      imageFull: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-07-01-at-20.31.18.png?w=2000&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751398338&s=3015fd51b8e01339805f2d2c04aed3cb"
+    },
+    {
+      title: "Search & Growth Strategy",
+      slug: "strategy-growth",
+      image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-25-at-14.37.50.png?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750858763&s=624a1f990a8d128dd35cf3a6e1f44dbe",
+      imageFull: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-25-at-14.37.50.png?w=2000&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750858763&s=942bb2a9f226a995cdd5b25d64509705"
+    },
+    {
+      title: "Content Experience",
+      slug: "content-experience",
+      image: "https://rise-atseven.transforms.svdcdn.com/production/images/0B5A7499.jpg?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750846496&s=1aebaeffe44aa88331de2609962a990e",
+      imageFull: "https://rise-atseven.transforms.svdcdn.com/production/images/0B5A7499.jpg?w=2000&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750846496&s=f06af03bd1b7577056129b56b67c0ad2"
+    },
+    {
+      title: "Data & Insights",
+      slug: "data-insights",
+      image: "https://rise-atseven.transforms.svdcdn.com/production/images/e34acc13-be9a-4862-a3bd-95aa2738aeb3.JPG?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751398487&s=5c5ad2c6b822417723c4f682fd885ced",
+      imageFull: "https://rise-atseven.transforms.svdcdn.com/production/images/e34acc13-be9a-4862-a3bd-95aa2738aeb3.JPG?w=2000&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751398487&s=91982a1f6ee17fb2964a4bc7a76167f0"
+    },
+    {
+      title: "Onsite SEO",
+      slug: "onsite-seo",
+      image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-24-at-00.20.47.png?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847627&s=4a4a4154f7497d086fc695e27bf2aa17",
+      imageFull: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-24-at-00.20.47.png?w=2000&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847627&s=146948423396731ebd58e4755e3d773a"
+    }
+  ];
+
+  // Split into two columns (left and right)
+  const leftColumnServices = services.filter((_, i) => i % 2 === 0);
+  const rightColumnServices = services.filter((_, i) => i % 2 === 1);
 
   useEffect(() => {
-    gsap.fromTo(
-      headerRef.current.children,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
+    // Animate header words with letter-by-letter animation (like original HTML)
+    if (headingRef.current) {
+      const words = headingRef.current.querySelectorAll('.heading-word');
+      words.forEach((word, i) => {
+        const letters = word.querySelectorAll('.letter');
+        gsap.fromTo(letters,
+          { y: 100, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.03,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+            delay: i * 0.1,
+          }
+        );
+      });
+    }
+
+    // Animate button
+    if (buttonRef.current) {
+      gsap.fromTo(buttonRef.current,
+        { opacity: 0, x: 20 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: buttonRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Animate each service row on scroll
+    serviceRowsRef.current.forEach((row, index) => {
+      if (row) {
+        gsap.fromTo(row,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 90%",
+              toggleActions: "play none none reverse",
+            },
+            delay: index * 0.05,
+          }
+        );
       }
-    );
+    });
   }, []);
 
-  const left = SERVICES.filter((_, i) => i % 2 === 0);
-  const right = SERVICES.filter((_, i) => i % 2 !== 0);
-  const rows = left.map((s, i) => [s, right[i]]).filter(Boolean);
+  // Service Row Component
+  const ServiceRow = ({ service, index, isLeft }) => {
+    const rowRef = useRef(null);
+    const titleRef = useRef(null);
+    const arrowRef = useRef(null);
+    const bgRef = useRef(null);
+    const bgImageRef = useRef(null);
+
+    useEffect(() => {
+      // Preload background image
+      if (bgImageRef.current) {
+        const img = new Image();
+        img.src = service.imageFull;
+      }
+    }, [service.imageFull]);
+
+    const handleMouseEnter = () => {
+      // Animate background
+      gsap.to(bgRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+      gsap.to(bgImageRef.current, {
+        scale: 1.05,
+        duration: 0.6,
+        ease: "power3.out",
+      });
+      // Animate title color
+      gsap.to(titleRef.current, {
+        color: "#ffffff",
+        duration: 0.3,
+        ease: "power2.out",
+      });
+      // Animate arrow
+      gsap.to(arrowRef.current, {
+        x: 0,
+        opacity: 1,
+        duration: 0.3,
+        ease: "back.out(1)",
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(bgRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+      });
+      gsap.to(bgImageRef.current, {
+        scale: 1,
+        duration: 0.4,
+        ease: "power3.out",
+      });
+      gsap.to(titleRef.current, {
+        color: "#1a1a1a",
+        duration: 0.2,
+        ease: "power2.out",
+      });
+      gsap.to(arrowRef.current, {
+        x: -10,
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+    };
+
+    return (
+      <div
+        ref={(el) => {
+          if (el) serviceRowsRef.current[index] = el;
+          rowRef.current = el;
+        }}
+        className={`service-row ${isLeft ? 'service-row-left' : 'service-row-right'}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Background Image */}
+        <div ref={bgRef} className="service-bg">
+          <div ref={bgImageRef} className="service-bg-image">
+            <img src={service.imageFull} alt={service.title} loading="lazy" />
+          </div>
+          <div className="service-bg-overlay"></div>
+        </div>
+
+        {/* Title */}
+        <div ref={titleRef} className="service-title">
+          {service.title}
+        </div>
+
+        {/* Arrow Icon */}
+        <div ref={arrowRef} className="service-arrow">
+          <i className="fa-regular fa-sharp fa-arrow-up-right"></i>
+        </div>
+      </div>
+    );
+  };
+
+  // Split heading "Our Services" into words with letters
+  const headingText = "OurServices";
+  const headingWords = [
+    { text: "Our", hasImage: false },
+    { text: "", hasImage: true, image: "https://rise-atseven.transforms.svdcdn.com/production/images/IMG_5079.JPG?w=200&h=200&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750944462&s=5eb651d549739cde26429958911743ea" },
+    { text: "Services", hasImage: false }
+  ];
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
-
-        .sv-section {
-          background: #ECEAE3;
-          padding: 5rem 4vw 6rem;
-          font-family: 'Inter', sans-serif;
+      <style jsx>{`
+        .services-section {
+          width: 100%;
+          padding-bottom: 3rem;
+          overflow-x: hidden;
         }
 
-        /* HEADER */
-        .sv-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 0;
+        .services-container {
+          width: 100%;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
 
-        .sv-heading {
-          display: flex;
-          align-items: center;
-          gap: 0.3em;
-          font-size: clamp(36px, 5vw, 72px);
-          font-weight: 800;
-          letter-spacing: -0.04em;
-          color: #0a0a0a;
-          line-height: 1;
+        @media (min-width: 768px) {
+          .services-container {
+            padding-left: 1.75rem;
+            padding-right: 1.75rem;
+          }
+        }
+
+        /* Header Styles */
+        .services-header {
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          gap: 0.75rem;
+          margin-bottom: 2rem;
+        }
+
+        .services-header-left {
+          grid-column: span 11;
+        }
+
+        @media (min-width: 768px) {
+          .services-header-left {
+            grid-column: span 9;
+          }
+          .services-header-right {
+            grid-column: span 3;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+          }
+        }
+
+        .services-heading {
+          display: inline-flex;
+          flex-wrap: wrap;
+          text-align: left;
+          justify-content: start;
+          color: #1a1a1a;
+          font-family: system-ui, -apple-system, 'Inter', sans-serif;
+          font-weight: 500;
+          letter-spacing: -0.025em;
+          font-size: clamp(2.5rem, 8vw, 4rem);
+          line-height: 0.9;
           margin: 0;
         }
 
-        .sv-heading-img {
-          width: clamp(44px, 4.5vw, 68px);
-          height: clamp(44px, 4.5vw, 68px);
-          border-radius: 10px;
-          object-fit: cover;
-          display: inline-block;
-          vertical-align: middle;
+        @media (min-width: 768px) {
+          .services-heading {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+          }
         }
 
-        .sv-view-all {
+        @media (min-width: 1024px) {
+          .services-heading {
+            font-size: clamp(3.5rem, 5vw, 5rem);
+          }
+        }
+
+        .heading-word {
           display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          padding: 0.65rem 1.5rem;
-          border-radius: 100px;
-          border: 1.5px solid rgba(0,0,0,0.22);
-          background: transparent;
-          color: #0a0a0a;
-          font-size: 14px;
-          font-weight: 500;
-          font-family: 'Inter', sans-serif;
-          text-decoration: none;
-          cursor: pointer;
-          transition: background 0.15s, transform 0.15s;
-          white-space: nowrap;
+          flex-wrap: wrap;
+          margin-right: 0.5rem;
+          overflow: hidden;
+        }
+
+        .heading-image-wrapper {
+          display: inline-block;
           flex-shrink: 0;
+          background: rgba(0,0,0,0.05);
+          overflow: hidden;
+          margin-right: 0.5rem;
+          border-radius: 15%;
+          width: 60px;
+          height: auto;
         }
 
-        .sv-view-all:hover {
-          background: rgba(0,0,0,0.06);
-          transform: scale(1.02);
+        @media (min-width: 768px) {
+          .heading-image-wrapper {
+            width: 80px;
+          }
         }
 
-        /* TOP DIVIDER */
-        .sv-divider-top {
+        .heading-image {
           width: 100%;
-          height: 0.5px;
-          background: rgba(0,0,0,0.15);
-          margin: 1.5rem 0 0;
+          height: auto;
+          object-fit: cover;
         }
 
-        /* GRID */
-        .sv-grid {
+        .letter {
+          display: inline-block;
+        }
+
+        /* View All Button */
+        .view-all-btn {
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem;
+          position: relative;
+          background: white;
+          color: #1a1a1a;
+          font-family: system-ui, -apple-system, 'Inter', sans-serif;
+          font-weight: 500;
+          font-size: 1rem;
+          padding: 0.75rem 1.5rem;
+          border-radius: 1.5rem;
+          text-decoration: none;
+          transition: border-radius 0.3s;
+          cursor: pointer;
+          border: none;
+          white-space: nowrap;
+        }
+
+        .view-all-btn:hover {
+          border-radius: 0.75rem;
+        }
+
+        .btn-text-wrapper {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-text-default, .btn-text-hover {
+          transition: transform 0.3s;
+        }
+
+        .btn-text-hover {
+          position: absolute;
+          top: 0;
+          left: 0;
+          transform: translateY(100%);
+        }
+
+        .view-all-btn:hover .btn-text-default {
+          transform: translateY(-100%);
+        }
+
+        .view-all-btn:hover .btn-text-hover {
+          transform: translateY(0);
+        }
+
+        /* Divider */
+        .divider-top {
+          width: 100%;
+          height: 1px;
+          background: rgba(0,0,0,0.1);
+          margin-bottom: 0;
+        }
+
+        /* Services Grid */
+        .services-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          width: 100%;
+          grid-template-columns: repeat(12, 1fr);
+          gap: 0.5rem;
         }
 
-        /* Each row pair */
-        .sv-grid-row {
-          display: contents;
+        .services-column {
+          grid-column: span 12;
         }
 
-        /* Single service item */
-        .sv-row {
+        @media (min-width: 768px) {
+          .services-column {
+            grid-column: span 6;
+          }
+        }
+
+        /* Service Row */
+        .service-row {
           position: relative;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 1.6rem 1rem 1.6rem 0;
-          border-bottom: 0.5px solid rgba(0,0,0,0.15);
+          padding: 1rem 0;
           cursor: pointer;
           overflow: hidden;
-          border-radius: 0;
-          transition: padding 0.2s;
+          border-bottom: 1px solid rgba(0,0,0,0.1);
+          transition: padding 0.3s;
         }
 
-        .sv-row:nth-child(odd) {
-          padding-right: 3rem;
-          border-right: 0.5px solid rgba(0,0,0,0.15);
+        .service-row-left {
+          padding-right: 0;
         }
 
-        .sv-row:nth-child(even) {
-          padding-left: 3rem;
+        .service-row-right {
+          padding-left: 0;
         }
 
-        .sv-row:hover {
-          padding-left: 1.2rem;
+        @media (min-width: 768px) {
+          .service-row-left {
+            padding-right: 3rem;
+            border-right: 1px solid rgba(0,0,0,0.1);
+          }
+          .service-row-right {
+            padding-left: 3rem;
+          }
         }
 
-        .sv-row:nth-child(odd):hover {
-          padding-left: 1.2rem;
+        .service-row:hover {
+          padding-left: 0.5rem;
         }
 
-        /* BG image */
-        .sv-row-bg {
+        /* Background Image */
+        .service-bg {
           position: absolute;
           inset: 0;
           opacity: 0;
-          transform: scale(1.04);
-          will-change: opacity, transform;
           z-index: 0;
-          border-radius: 0;
+          border-radius: 1.5rem;
           overflow: hidden;
+          pointer-events: none;
         }
 
-        .sv-row-bg img {
+        .service-bg-image {
+          width: 100%;
+          height: 100%;
+          transform: scale(1);
+          transition: transform 0.6s;
+        }
+
+        .service-bg-image img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
 
-        .sv-row-bg-overlay {
+        .service-bg-overlay {
           position: absolute;
           inset: 0;
-          background: rgba(0,0,0,0.55);
+          background: rgba(0,0,0,0.6);
         }
 
         /* Title */
-        .sv-title {
-          font-size: clamp(22px, 2.8vw, 44px);
-          font-weight: 800;
-          letter-spacing: -0.035em;
-          color: #0a0a0a;
-          line-height: 1.1;
+        .service-title {
+          font-size: clamp(1.5rem, 5vw, 2.5rem);
+          font-weight: 500;
+          letter-spacing: -0.025em;
+          color: #1a1a1a;
           position: relative;
           z-index: 1;
-          will-change: color;
-          transition: color 0.1s;
+          transition: color 0.3s;
+          font-family: system-ui, -apple-system, 'Inter', sans-serif;
+        }
+
+        @media (min-width: 1024px) {
+          .service-title {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+          }
         }
 
         /* Arrow */
-        .sv-arrow {
-          font-size: clamp(18px, 2vw, 30px);
-          color: #fff;
+        .service-arrow {
           position: relative;
           z-index: 1;
-          will-change: opacity, transform;
-          flex-shrink: 0;
+          opacity: 0;
+          transform: translateX(-10px);
+          font-size: 1.2rem;
+          color: white;
+          transition: all 0.3s;
+        }
+
+        @media (min-width: 768px) {
+          .service-arrow {
+            font-size: 1.5rem;
+          }
+        }
+
+        /* Mobile View All Button */
+        .mobile-view-all {
+          grid-column: span 12;
+          margin-top: 1.5rem;
+          display: flex;
+          justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+          .mobile-view-all {
+            display: none;
+          }
         }
       `}</style>
 
-      <section className="sv-section" ref={sectionRef}>
+      <section ref={sectionRef} className="services-section">
+        <div className="services-container">
+          {/* Header */}
+          <div className="services-header">
+            <div className="services-header-left" ref={headerRef}>
+              <h2 ref={headingRef} className="services-heading">
+                <span className="heading-word">
+                  {Array.from("Our").map((letter, i) => (
+                    <span key={i} className="letter">{letter}</span>
+                  ))}
+                </span>
+                <span className="heading-image-wrapper">
+                  <img 
+                    className="heading-image" 
+                    src="https://rise-atseven.transforms.svdcdn.com/production/images/IMG_5079.JPG?w=200&h=200&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750944462&s=5eb651d549739cde26429958911743ea" 
+                    alt=""
+                  />
+                </span>
+                <span className="heading-word">
+                  {Array.from("Services").map((letter, i) => (
+                    <span key={i} className="letter">{letter}</span>
+                  ))}
+                </span>
+              </h2>
+            </div>
+            <div className="services-header-right">
+              <a 
+                ref={buttonRef}
+                href="https://riseatseven.com/services/" 
+                className="view-all-btn"
+              >
+                <div className="btn-text-wrapper">
+                  <div className="btn-text-default">View All Services ↗</div>
+                  <div className="btn-text-hover">View All Services ↗</div>
+                </div>
+              </a>
+            </div>
+          </div>
 
-        {/* HEADER */}
-        <div className="sv-header" ref={headerRef}>
-          <h2 className="sv-heading">
-            Our
-            <img
-              className="sv-heading-img"
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=200&q=80"
-              alt="team"
-            />
-            Services
-          </h2>
-          <a href="#" className="sv-view-all">
-            View All Services ↗
-          </a>
+          {/* Divider */}
+          <div className="divider-top"></div>
+
+          {/* Services Grid - Two Columns */}
+          <div className="services-grid">
+            {/* Left Column */}
+            <div className="services-column">
+              {leftColumnServices.map((service, i) => (
+                <ServiceRow 
+                  key={service.title}
+                  service={service}
+                  index={i}
+                  isLeft={true}
+                />
+              ))}
+            </div>
+
+            {/* Right Column */}
+            <div className="services-column">
+              {rightColumnServices.map((service, i) => (
+                <ServiceRow 
+                  key={service.title}
+                  service={service}
+                  index={leftColumnServices.length + i}
+                  isLeft={false}
+                />
+              ))}
+            </div>
+
+            {/* Mobile View All Button */}
+            <div className="mobile-view-all">
+              <a href="https://riseatseven.com/services/" className="view-all-btn">
+                <div className="btn-text-wrapper">
+                  <div className="btn-text-default">View All Services ↗</div>
+                  <div className="btn-text-hover">View All Services ↗</div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
-
-        {/* TOP DIVIDER */}
-        <div className="sv-divider-top" />
-
-        {/* SERVICES GRID */}
-        <div className="sv-grid">
-          {SERVICES.map((service, i) => (
-            <ServiceRow key={service.title} service={service} index={i} isLeft={i % 2 === 0} />
-          ))}
-        </div>
-
       </section>
     </>
   );
