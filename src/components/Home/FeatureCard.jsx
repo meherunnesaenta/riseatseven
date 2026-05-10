@@ -1,3 +1,4 @@
+// FeaturedWork.jsx
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -119,114 +120,101 @@ const featuredWorks = [
 
 export default function FeaturedWork() {
   const sectionRef = useRef(null);
-  const triggerRef = useRef(null);
+  const containerRef = useRef(null);
   const imagesRef = useRef(null);
-  const headingsContainerRef = useRef(null);
   const headingRefs = useRef([]);
   const [hoveredId, setHoveredId] = useState(null);
 
   useEffect(() => {
-    if (!triggerRef.current || !imagesRef.current || !headingsContainerRef.current) return;
+    // Only run on desktop
+    if (window.innerWidth < 1024) return;
+    
+    if (!containerRef.current || !imagesRef.current) return;
 
-    const trigger = triggerRef.current;
+    const container = containerRef.current;
     const images = imagesRef.current;
-    const headingsContainer = headingsContainerRef.current;
     const headings = headingRefs.current.filter(h => h !== null);
-    const windowHeight = window.innerHeight;
-
-    // Set trigger height
-    gsap.set(trigger, {
-      height: `${images.offsetHeight}px`
-    });
-
-    // Desktop scroll animation
-    if (window.matchMedia("(pointer: fine)").matches) {
-      gsap.to(images, {
-        y: () => {
-          return -(images.offsetHeight - windowHeight);
-        },
-        ease: 'none',
-        scrollTrigger: {
-          trigger: trigger,
-          start: 'top top',
-          end: () => {
-            return `+=${images.offsetHeight - windowHeight}`;
-          },
-          scrub: true,
-        },
-      });
-    } else {
-      // Touch devices
-      gsap.to(images, {
-        y: () => {
-          return -(images.offsetHeight - (windowHeight * 1.1));
-        },
-        ease: 'none',
-        scrollTrigger: {
-          trigger: trigger,
-          start: 'top top',
-          end: () => {
-            return `+=${images.offsetHeight - (windowHeight * 1.1)}`;
-          },
-          scrub: true,
-          pin: true,
-        },
-      });
-    }
-
-    // Headings animation
-    const headingsTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: trigger,
+    
+    const timer = setTimeout(() => {
+      const windowHeight = window.innerHeight;
+      
+      // Get the exact height of the images container
+      const imagesInner = images.querySelector('.fw-right-inner');
+      const imagesHeight = imagesInner ? imagesInner.scrollHeight : 0;
+      
+      // Calculate the exact scroll distance needed
+      // We only need to scroll until the last image is fully visible
+      const totalScrollDistance = imagesHeight - windowHeight;
+      
+      if (totalScrollDistance <= 0) return;
+      
+      // Kill existing ScrollTriggers
+      ScrollTrigger.getAll().forEach(st => st.kill());
+      
+      // Get the section element for proper pinning
+      const section = container.closest('.fw-section');
+      
+      // Create the scroll trigger
+      const st = ScrollTrigger.create({
+        trigger: container,
         start: 'top top',
-        end: () => {
-          return `+=${images.offsetHeight - windowHeight}`;
+        end: `+=${totalScrollDistance}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const yOffset = -totalScrollDistance * progress;
+          gsap.set(images, { y: yOffset });
+          
+          // Animate headings
+          headings.forEach((heading, index) => {
+            let headingProgress = 0;
+            const startPoint = index * 0.09;
+            if (progress > startPoint) {
+              headingProgress = Math.min(1, (progress - startPoint) / 0.3);
+            }
+            const headingY = -60 * headingProgress;
+            const headingOpacity = 1 - headingProgress * 0.5;
+            gsap.set(heading, { y: headingY, opacity: headingOpacity });
+          });
         },
-        scrub: true,
-      }
-    });
-
-    headings.forEach((heading) => {
-      headingsTimeline.fromTo(heading,
-        { y: 150 },
-        { 
-          y: (headingsContainer.offsetHeight * -1) + 300,
-          duration: 4,
-          ease: 'none',
-        },
-        0
-      );
-    });
-
+        onRefresh: (self) => {
+          // Recalculate on refresh
+          const newImagesHeight = imagesInner ? imagesInner.scrollHeight : 0;
+          const newScrollDistance = newImagesHeight - windowHeight;
+          self.end = `+=${newScrollDistance}`;
+        }
+      });
+      
+    }, 100);
+    
     const handleResize = () => {
       ScrollTrigger.refresh();
-      gsap.set(trigger, {
-        height: `${images.offsetHeight}px`
-      });
     };
-
+    
     window.addEventListener('resize', handleResize);
-
+    
     return () => {
+      clearTimeout(timer);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
-  // Handle heading hover - this will trigger image hover effect
   const handleHeadingHover = (workId) => {
     setHoveredId(workId);
-    // Dispatch custom event for cursor
-    const event = new CustomEvent('component-cursor', { 
-      detail: { active: true, icon: 'fa-arrow-up-right' } 
+    const event = new CustomEvent('component-cursor', {
+      detail: { active: true, icon: 'fa-arrow-up-right' }
     });
     window.dispatchEvent(event);
   };
 
   const handleHeadingLeave = () => {
     setHoveredId(null);
-    const event = new CustomEvent('component-cursor', { 
-      detail: { active: false } 
+    const event = new CustomEvent('component-cursor', {
+      detail: { active: false }
     });
     window.dispatchEvent(event);
   };
@@ -235,20 +223,13 @@ export default function FeaturedWork() {
     <div className="fw-root">
       <style>{`
         .fw-root {
-          background: #ECEAE3;
           overflow-x: hidden;
           width: 100%;
         }
 
         .fw-section {
           width: 100%;
-          padding-bottom: 3rem;
-        }
-
-        @media (min-width: 1280px) {
-          .fw-section {
-            padding-bottom: 6rem;
-          }
+          padding-bottom: 0;
         }
 
         .fw-container {
@@ -264,92 +245,73 @@ export default function FeaturedWork() {
           }
         }
 
-        /* Trigger Container */
-        .fw-trigger {
-          position: relative;
+        /* Scroll Container - this will be pinned */
+        .fw-scroll-container {
           width: 100%;
-          margin-top: -1.75rem;
-          margin-bottom: -1.75rem;
-          display: flex;
-          overflow: hidden;
-        }
-
-        @media (min-width: 1024px) {
-          .fw-trigger {
-            overflow: visible;
-          }
-        }
-
-        /* Sticky Content */
-        .fw-sticky {
-          width: 100%;
-          padding-top: 1.75rem;
-          padding-bottom: 1.75rem;
-          top: 0;
-          height: 100vh;
-          position: sticky;
         }
 
         /* Main Card */
         .fw-card {
           width: 100%;
-          height: 100%;
-          overflow: hidden;
           background: #1a1a1a;
           border-radius: 1.5rem;
-          display: grid;
-          grid-template-columns: repeat(12, 1fr);
-          padding-left: 1.25rem;
-          padding-right: 1.25rem;
+          display: flex;
+          flex-direction: column;
+          padding: 0 1.25rem;
+          gap: 1rem;
+          overflow: hidden;
         }
 
         @media (min-width: 1024px) {
           .fw-card {
-            padding-left: 2rem;
-            padding-right: 2rem;
+            flex-direction: row;
+            padding: 0 2rem;
+            height: 100vh;
           }
         }
 
         @media (min-width: 1280px) {
           .fw-card {
-            padding-left: 2.5rem;
-            padding-right: 2.5rem;
+            padding: 0 2.5rem;
           }
         }
 
         /* Left Column */
         .fw-left {
-          position: relative;
-          grid-column: span 12;
-          align-items: start;
+          display: none;
+          width: 50%;
+          height: 100%;
+          overflow-y: auto;
+          scrollbar-width: none;
+        }
+        
+        .fw-left::-webkit-scrollbar {
           display: none;
         }
 
         @media (min-width: 1024px) {
           .fw-left {
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            grid-column: span 6;
-            height: 96vh;
+            flex-direction: column;
+            width: 50%;
           }
         }
 
         .fw-headings-wrapper {
           display: flex;
           flex-direction: column;
-          align-items: start;
+          align-items: flex-start;
           position: relative;
           z-index: 10;
-          height: 100%;
+          width: 100%;
           padding-top: 4rem;
+          padding-bottom: 4rem;
         }
 
         @media (min-width: 1024px) {
           .fw-headings-wrapper {
             padding-top: 6rem;
-            padding-bottom: 8rem;
-            gap-y: 5rem;
+            padding-bottom: 6rem;
           }
         }
 
@@ -360,6 +322,8 @@ export default function FeaturedWork() {
           font-family: system-ui, -apple-system, 'Inter', sans-serif;
           font-weight: 500;
           letter-spacing: -0.025em;
+          margin-bottom: 2rem;
+          flex-shrink: 0;
         }
 
         @media (min-width: 1024px) {
@@ -368,66 +332,25 @@ export default function FeaturedWork() {
           }
         }
 
-        .fw-headings-scroll {
-          position: relative;
-          flex: 1;
-          overflow: hidden;
-          padding-right: 1.25rem;
-          display: none;
-        }
-
-        @media (min-width: 1024px) {
-          .fw-headings-scroll {
-            display: inline-block;
-          }
-        }
-
-        .fw-gradient-top {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 33%;
-          z-index: 20;
-          pointer-events: none;
-          background: linear-gradient(to bottom, #1a1a1a, transparent);
-          display: none;
-        }
-
-        .fw-gradient-bottom {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 33%;
-          z-index: 20;
-          pointer-events: none;
-          background: linear-gradient(to top, #1a1a1a, transparent);
-          display: none;
-        }
-
-        @media (min-width: 1024px) {
-          .fw-gradient-top, .fw-gradient-bottom {
-            display: flex;
-          }
-        }
-
         .fw-headings-list {
-          display: grid;
-          gap-y: 0.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
           position: relative;
           z-index: 10;
+          width: 100%;
         }
 
-        @media (min-width: 1536px) {
+        @media (min-width: 1024px) {
           .fw-headings-list {
-            gap-y: 0.75rem;
+            gap: 2.5rem;
           }
         }
 
         .fw-heading-item {
           position: relative;
-          transition: transform 0.3s;
+          transition: transform 0.3s ease;
+          will-change: transform;
         }
 
         .fw-heading-item.hovered {
@@ -437,53 +360,64 @@ export default function FeaturedWork() {
         .fw-heading-link {
           display: flex;
           align-items: flex-start;
-          gap: 0.5rem;
+          gap: 0.75rem;
           text-decoration: none;
           cursor: pointer;
         }
 
         .fw-heading-title {
           color: white;
-          font-size: clamp(2rem, 6vw, 4rem);
+          font-size: 2rem;
           font-weight: 500;
           letter-spacing: -0.025em;
-          line-height: 0.9;
+          line-height: 1;
           font-family: system-ui, -apple-system, 'Inter', sans-serif;
-          white-space: nowrap;
+          white-space: normal;
         }
 
         @media (min-width: 1024px) {
           .fw-heading-title {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-size: 2.5rem;
+          }
+        }
+
+        @media (min-width: 1280px) {
+          .fw-heading-title {
+            font-size: 3rem;
           }
         }
 
         .fw-heading-year {
-          color: white;
-          font-size: 0.75rem;
+          color: rgba(255,255,255,0.6);
+          font-size: 0.7rem;
           font-weight: 500;
           margin-top: 0.5rem;
+          white-space: nowrap;
         }
 
         /* Right Column */
         .fw-right {
-          grid-column: span 12;
-          display: grid;
-          padding-top: 1.75rem;
-          padding-bottom: 3.5rem;
+          width: 100%;
+          overflow: hidden;
+          height: 100%;
         }
 
         @media (min-width: 1024px) {
           .fw-right {
-            grid-column: span 6;
-            grid-column-start: 7;
+            width: 50%;
           }
+        }
+
+        .fw-right-inner {
+          display: flex;
+          flex-direction: column;
+          gap: 1.75rem;
+          padding: 2rem 0;
         }
 
         /* Mobile Label */
         .fw-mobile-label {
-          margin-bottom: 1.25rem;
-          display: block;
+          margin-bottom: 1rem;
         }
 
         @media (min-width: 1024px) {
@@ -506,43 +440,44 @@ export default function FeaturedWork() {
           display: block;
           border-radius: 1rem;
           overflow: hidden;
-          margin-bottom: 1.25rem;
           position: relative;
           text-decoration: none;
           cursor: pointer;
+          width: 100%;
+          background: #2a2a2a;
         }
 
         @media (min-width: 1024px) {
           .fw-card-link {
-            margin-bottom: 1.75rem;
+            min-height: 360px;
           }
         }
 
-        /* Image container - 4:3 aspect ratio */
+        @media (max-width: 1023px) {
+          .fw-card-link {
+            aspect-ratio: 4 / 3;
+          }
+        }
+
         .fw-image-container {
           position: relative;
           width: 100%;
-          padding-top: 75%;
+          height: 100%;
+          min-height: inherit;
           overflow: hidden;
-          transition: transform 0.3s;
+          transition: transform 0.3s ease;
         }
 
-        .fw-card-link:hover .fw-image-container {
-          transform: scale(1.05);
-        }
-
-        /* When heading is hovered, image shows hover effect */
+        .fw-card-link:hover .fw-image-container,
         .fw-card-link.hovered-by-heading .fw-image-container {
           transform: scale(1.05);
         }
 
         .fw-image-container img {
-          position: absolute;
-          top: 0;
-          left: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
+          display: block;
         }
 
         /* Tags */
@@ -564,18 +499,20 @@ export default function FeaturedWork() {
           display: inline-flex;
           align-items: center;
           border-radius: 9999px;
-          gap: 0.75rem;
-          padding: 0.625rem 0.875rem;
+          gap: 0.5rem;
+          padding: 0.5rem 0.875rem;
           background: rgba(255,255,255,0.2);
           backdrop-filter: blur(4px);
-          font-size: 0.75rem;
+          font-size: 0.7rem;
           font-weight: 500;
           color: white;
         }
 
         @media (min-width: 1024px) {
           .fw-tag {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
+            padding: 0.625rem 1rem;
+            gap: 0.75rem;
           }
         }
 
@@ -600,26 +537,25 @@ export default function FeaturedWork() {
 
         .fw-content-year {
           color: white;
-          font-size: 0.75rem;
+          font-size: 0.7rem;
           font-weight: 500;
           margin-bottom: 0.25rem;
         }
 
         .fw-content-title {
           color: white;
-          font-size: 1.5rem;
+          font-size: 1rem;
           font-weight: 500;
           letter-spacing: -0.025em;
-          line-height: 1;
+          line-height: 1.2;
         }
 
-        /* Gradient overlay (mobile only) */
         .fw-gradient-overlay {
           position: absolute;
           bottom: 0;
           left: 0;
           width: 100%;
-          height: 8rem;
+          height: 6rem;
           background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
           z-index: 20;
           pointer-events: none;
@@ -631,7 +567,7 @@ export default function FeaturedWork() {
           }
         }
 
-        /* Hover overlay (desktop only) */
+        /* Hover overlay */
         .fw-hover-overlay {
           position: absolute;
           top: 0;
@@ -643,14 +579,14 @@ export default function FeaturedWork() {
           align-items: flex-start;
           justify-content: space-between;
           z-index: 40;
-          padding: 0.75rem;
-          transition: opacity 0.3s;
+          padding: 1rem;
+          transition: opacity 0.3s ease;
           opacity: 0;
         }
 
         @media (min-width: 1024px) {
           .fw-hover-overlay {
-            padding: 1.25rem;
+            padding: 1.5rem;
           }
         }
 
@@ -660,22 +596,16 @@ export default function FeaturedWork() {
         }
 
         .fw-hover-description {
-          font-size: 1.25rem;
+          font-size: 1rem;
           font-weight: 500;
           letter-spacing: -0.025em;
-          line-height: 1.2;
+          line-height: 1.3;
           color: #111212;
         }
 
         @media (min-width: 1024px) {
           .fw-hover-description {
-            font-size: 1.5rem;
-          }
-        }
-
-        @media (min-width: 1280px) {
-          .fw-hover-description {
-            font-size: 1.75rem;
+            font-size: 1.1rem;
           }
         }
 
@@ -683,11 +613,11 @@ export default function FeaturedWork() {
           display: inline-flex;
           align-items: center;
           border-radius: 9999px;
-          gap: 0.75rem;
-          padding: 0.625rem 0.875rem;
-          background: rgba(255,255,255,0.15);
+          gap: 0.5rem;
+          padding: 0.4rem 0.75rem;
+          background: rgba(255,255,255,0.2);
           backdrop-filter: blur(4px);
-          font-size: 0.75rem;
+          font-size: 0.7rem;
           font-weight: 500;
           color: #111212;
         }
@@ -696,13 +626,10 @@ export default function FeaturedWork() {
         .fw-bottom-btn {
           display: flex;
           justify-content: center;
-          margin-top: 0.75rem;
-        }
-
-        @media (min-width: 1024px) {
-          .fw-bottom-btn {
-            margin-top: 1.75rem;
-          }
+          margin-top: 3rem;
+          margin-bottom: 3rem;
+          position: relative;
+          z-index: 10;
         }
 
         .fw-explore-btn {
@@ -710,25 +637,18 @@ export default function FeaturedWork() {
           justify-content: center;
           align-items: center;
           gap: 0.5rem;
-          position: relative;
           background: white;
           color: #1a1a1a;
           font-family: system-ui, -apple-system, 'Inter', sans-serif;
           font-weight: 500;
-          font-size: 1rem;
+          font-size: 0.875rem;
           padding: 0.75rem 1.5rem;
           border-radius: 1.5rem;
           text-decoration: none;
-          transition: border-radius 0.3s;
+          transition: border-radius 0.3s ease;
           cursor: pointer;
           border: none;
           white-space: nowrap;
-        }
-
-        @media (min-width: 768px) {
-          .fw-explore-btn {
-            padding: 0.875rem 2rem;
-          }
         }
 
         .fw-explore-btn:hover {
@@ -743,8 +663,9 @@ export default function FeaturedWork() {
           gap: 0.5rem;
         }
 
-        .fw-btn-default, .fw-btn-hover {
-          transition: transform 0.3s;
+        .fw-btn-default,
+        .fw-btn-hover {
+          transition: transform 0.3s ease;
           display: flex;
           align-items: center;
           gap: 0.5rem;
@@ -764,51 +685,60 @@ export default function FeaturedWork() {
         .fw-explore-btn:hover .fw-btn-hover {
           transform: translateY(0);
         }
+
+        /* Mobile specific */
+        @media (max-width: 1023px) {
+          .fw-card {
+            height: auto;
+            min-height: auto;
+          }
+          
+          .fw-headings-wrapper {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+          }
+        }
       `}</style>
 
-      <section ref={sectionRef} className="fw-section">
+      <div className="fw-section">
         <div className="fw-container">
-          <div ref={triggerRef} className="fw-trigger">
-            <div className="fw-sticky">
-              <div className="fw-card">
-                {/* Left Column - Headings */}
-                <div className="fw-left">
-                  <div className="fw-headings-wrapper">
-                    <h2 className="fw-label">Featured Work</h2>
-                    <div className="fw-headings-scroll">
-                      <div className="fw-gradient-top"></div>
-                      <div className="fw-gradient-bottom"></div>
-                      <div ref={headingsContainerRef} className="fw-headings-list">
-                        {featuredWorks.map((work, index) => (
-                          <div 
-                            key={work.id}
-                            ref={(el) => headingRefs.current[index] = el}
-                            className={`fw-heading-item ${hoveredId === work.id ? 'hovered' : ''}`}
-                          >
-                            <a 
-                              href={work.link}
-                              className="fw-heading-link"
-                              onMouseEnter={() => handleHeadingHover(work.id)}
-                              onMouseLeave={handleHeadingLeave}
-                            >
-                              <span className="fw-heading-title">{work.title}</span>
-                              <span className="fw-heading-year">{work.year}</span>
-                            </a>
-                          </div>
-                        ))}
+          <div ref={containerRef} className="fw-scroll-container">
+            <div className="fw-card">
+              {/* Left Column - Headings */}
+              <div className="fw-left">
+                <div className="fw-headings-wrapper">
+                  <h2 className="fw-label">Featured Work</h2>
+                  <div className="fw-headings-list">
+                    {featuredWorks.map((work, index) => (
+                      <div
+                        key={work.id}
+                        ref={(el) => headingRefs.current[index] = el}
+                        className={`fw-heading-item ${hoveredId === work.id ? 'hovered' : ''}`}
+                      >
+                        <a
+                          href={work.link}
+                          className="fw-heading-link"
+                          onMouseEnter={() => handleHeadingHover(work.id)}
+                          onMouseLeave={handleHeadingLeave}
+                        >
+                          <span className="fw-heading-title">{work.title}</span>
+                          <span className="fw-heading-year">{work.year}</span>
+                        </a>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
+              </div>
 
-                {/* Right Column - Images */}
-                <div ref={imagesRef} className="fw-right">
+              {/* Right Column - Images */}
+              <div ref={imagesRef} className="fw-right">
+                <div className="fw-right-inner">
                   <div className="fw-mobile-label">
                     <h2>Featured Work</h2>
                   </div>
-                  
+
                   {featuredWorks.map((work) => (
-                    <a 
+                    <a
                       key={work.id}
                       href={work.link}
                       className={`fw-card-link ${hoveredId === work.id ? 'hovered-by-heading' : ''}`}
@@ -816,9 +746,13 @@ export default function FeaturedWork() {
                       onMouseLeave={handleHeadingLeave}
                     >
                       <div className="fw-image-container">
-                        <img src={work.image} alt={work.title} loading="lazy" />
+                        <img 
+                          src={work.image} 
+                          alt={work.title} 
+                          loading="lazy"
+                        />
                       </div>
-                      
+
                       {work.category && (
                         <div className="fw-tags">
                           <div className="fw-tag">
@@ -828,15 +762,18 @@ export default function FeaturedWork() {
                           </div>
                         </div>
                       )}
-                      
+
                       <div className="fw-content">
                         <div className="fw-content-year">{work.year}</div>
                         <div className="fw-content-title">{work.title}</div>
                       </div>
-                      
-                      <div className="fw-gradient-overlay"></div>
-                      
-                      <div className="fw-hover-overlay" style={{ backgroundColor: work.colour }}>
+
+                      <div className="fw-gradient-overlay" />
+
+                      <div 
+                        className="fw-hover-overlay" 
+                        style={{ backgroundColor: work.colour }}
+                      >
                         <div className="fw-hover-description">{work.description}</div>
                         {work.category && (
                           <div className="fw-hover-tag">
@@ -863,7 +800,7 @@ export default function FeaturedWork() {
             </a>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

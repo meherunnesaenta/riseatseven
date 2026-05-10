@@ -370,7 +370,7 @@ const WhatsNew = () => {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style  jsx={true} global={true}>{`
         @keyframes letterFloat {
           0% {
             opacity: 0;

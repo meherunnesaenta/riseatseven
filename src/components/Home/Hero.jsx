@@ -361,7 +361,7 @@ export default function Hero() {
           }
           
           .h7-footer-right {
-            text-align: left;
+            text-align: center;
           }
           
           .h7-award-item {

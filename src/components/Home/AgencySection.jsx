@@ -6,31 +6,44 @@ export default function AgencySection() {
   const headingRef = useRef(null);
   const subtitleRef = useRef(null);
   const desktopBtnsRef = useRef(null);
+  const mobileBtnsRef = useRef(null);
   const imgRef = useRef(null);
+  const wordsRef = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
+      // Animate subtitle
       tl.fromTo(
         subtitleRef.current,
         { opacity: 0, y: 18 },
         { opacity: 1, y: 0, duration: 0.8 }
       )
+      // Animate heading words
       .fromTo(
-        headingRef.current.querySelectorAll(".word"),
+        wordsRef.current,
         { opacity: 0, y: 40 },
         { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 },
         "-=0.4"
       )
+      // Animate image
       .fromTo(
         imgRef.current,
         { opacity: 0, scale: 0.8, rotate: -6 },
         { opacity: 1, scale: 1, rotate: 0, duration: 0.6 },
         "-=0.3"
       )
+      // Animate desktop buttons
       .fromTo(
         desktopBtnsRef.current?.querySelectorAll(".as-btn") || [],
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
+        "-=0.2"
+      )
+      // Animate mobile buttons
+      .fromTo(
+        mobileBtnsRef.current?.querySelectorAll(".as-btn") || [],
         { opacity: 0, y: 14 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
         "-=0.2"
@@ -39,6 +52,8 @@ export default function AgencySection() {
 
     return () => ctx.revert();
   }, []);
+
+  const words = ["Driving", "Demand", "&", "Discovery"];
 
   return (
     <section className="as-root" ref={sectionRef}>
@@ -60,14 +75,23 @@ export default function AgencySection() {
           <div className="as-right">
             <h1 className="as-heading" ref={headingRef}>
               <div className="as-line">
-                <span className="word">Driving</span>
-                <span className="word">Demand</span>
-                <span className="word">&</span>
-
-                
+                {words.slice(0, 3).map((word, idx) => (
+                  <span 
+                    key={idx}
+                    className="word"
+                    ref={el => wordsRef.current[idx] = el}
+                  >
+                    {word}
+                  </span>
+                ))}
               </div>
               <div className="as-line">
-                <span className="word">Discovery</span>
+                <span 
+                  className="word"
+                  ref={el => wordsRef.current[3] = el}
+                >
+                  {words[3]}
+                </span>
                 <img
                   ref={imgRef}
                   className="as-inline-img"
@@ -102,7 +126,7 @@ export default function AgencySection() {
         </div>
 
         {/* MOBILE BUTTONS with FLIP ANIMATION */}
-        <div className="as-mobile-buttons">
+        <div className="as-mobile-buttons" ref={mobileBtnsRef}>
           <a href="https://riseatseven.com/about/" className="as-btn as-btn-white">
             <div className="as-btn-inner">
               <div className="as-btn-text-wrapper">
@@ -125,11 +149,11 @@ export default function AgencySection() {
 
       </div>
 
-      <style jsx>{`
+      <style >{`
         /* ROOT STYLES */
         .as-root {
           width: 100%;
-           background:  '#EBEBEB',
+          background: #EBEBEB;
           padding: 3rem 1rem;
         }
 
@@ -188,11 +212,17 @@ export default function AgencySection() {
           }
         }
 
+        @media (min-width: 1536px) {
+          .as-left {
+            max-width: 42rem;
+          }
+        }
+
         .as-left p {
           font-family: system-ui, -apple-system, 'Inter', sans-serif;
           font-weight: 500;
           font-size: 1.125rem;
-          line-height: 1;
+          line-height: 1.2;
           color: #111111;
           margin: 0;
           text-align: left;
@@ -201,6 +231,13 @@ export default function AgencySection() {
         @media (min-width: 1024px) {
           .as-left p {
             font-size: 1.25rem;
+            line-height: 1.3;
+          }
+        }
+
+        @media (min-width: 1280px) {
+          .as-left p {
+            font-size: 1.5rem;
           }
         }
 
@@ -224,20 +261,26 @@ export default function AgencySection() {
           }
         }
 
+        @media (min-width: 1536px) {
+          .as-right {
+            max-width: 56rem;
+          }
+        }
+
         /* HEADING */
         .as-heading {
           margin: 0;
           font-family: system-ui, -apple-system, 'Inter', sans-serif;
           font-weight: 500;
-          letter-spacing: -0.25em;
+          letter-spacing: -0.025em;
         }
 
         .as-line {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          gap: .23rem;
-          line-height: 0.8;
+          gap: 0.25rem;
+          line-height: 0.9;
         }
 
         .word {
@@ -245,6 +288,7 @@ export default function AgencySection() {
           font-weight: 500;
           color: #111111;
           display: inline-block;
+          opacity: 0;
         }
 
         @media (min-width: 768px) {
@@ -256,12 +300,19 @@ export default function AgencySection() {
         @media (min-width: 1024px) {
           .word {
             font-size: 4.5rem;
+            line-height: 0.9;
           }
         }
 
         @media (min-width: 1280px) {
           .word {
             font-size: 5rem;
+          }
+        }
+
+        @media (min-width: 1536px) {
+          .word {
+            font-size: 6rem;
           }
         }
 
@@ -275,6 +326,7 @@ export default function AgencySection() {
           background: rgba(0,0,0,0.05);
           flex-shrink: 0;
           margin-left: 0.25rem;
+          opacity: 0;
         }
 
         @media (min-width: 768px) {
@@ -288,6 +340,13 @@ export default function AgencySection() {
           .as-inline-img {
             width: 64px;
             height: 64px;
+          }
+        }
+
+        @media (min-width: 1280px) {
+          .as-inline-img {
+            width: 72px;
+            height: 72px;
           }
         }
 
@@ -318,9 +377,9 @@ export default function AgencySection() {
           }
         }
 
-        @media (max-width: 480px) {
-          .as-mobile-buttons .as-btn {
-            flex: 1;
+        @media (max-width: 640px) {
+          .as-mobile-buttons {
+            flex-direction: column;
           }
         }
 
@@ -333,9 +392,14 @@ export default function AgencySection() {
           padding: 0.75rem 1.5rem;
           border-radius: 1.5rem;
           cursor: pointer;
-          
           border: none;
           overflow: hidden;
+          transition: border-radius 0.3s ease;
+          opacity: 0;
+        }
+
+        .as-btn:hover {
+          border-radius: 0.75rem;
         }
 
         .as-btn-inner {
@@ -382,10 +446,6 @@ export default function AgencySection() {
         .as-btn-white {
           background: white;
           color: #111111;
-        }
-
-        .as-btn-white:hover {
-          border-radius: 0.75rem;
         }
 
         .as-btn-transparent {

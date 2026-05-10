@@ -228,7 +228,7 @@ export default function OurServices() {
 
   return (
     <>
-      <style jsx>{`
+      <style >{`
         .services-section {
           width: 100%;
           padding-bottom: 3rem;

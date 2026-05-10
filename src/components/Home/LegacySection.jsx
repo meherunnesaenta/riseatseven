@@ -265,7 +265,7 @@ const LegacySection = () => {
       </div>
 
       {/* Global Styles */}
-      <style jsx>{`
+      <style >{`
         .w-full {
           width: 100%;
         }

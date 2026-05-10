@@ -189,7 +189,7 @@ export default function MarqueeBanner() {
         </div>
       </section>
 
-      <style jsx>{`
+      <style>{`
         .marquee-global-wrapper {
           overflow-x: hidden;
           width: 100%;

@@ -200,7 +200,6 @@ export default function HeroSection() {
           flex-direction: column;
           align-items: center;
           max-width: 90%;
-         
         }
 
         /* Awards Section */
@@ -266,7 +265,7 @@ export default function HeroSection() {
           font-weight: 500;
           letter-spacing: -0.025em;
           text-align: center;
-          font-size: clamp(2.5rem, 8vw, 4.5rem);
+          font-size: clamp(3.5rem, 8vw, 5.5rem);
           line-height: 0.87;
           margin: 0;
         }
