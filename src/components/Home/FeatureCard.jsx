@@ -1,354 +1,680 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import "../../styles/home/FeatureCard.css";
+import { useEffect, useRef, useState } from "react";
 
-const workItems = [
+const cases = [
   {
-    id: 8366,
-    title: "SIXT",
-    year: "[2023-2025]",
-    description: "An extra 3m clicks regionally through SEO",
-    category: "Car rental",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/Logos/Client/Black/sixt-1.jpg?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847611&s=2414c4f856c059625e43608b5128cfd5",
-    colour: "#cb7b3a",
-    link: "https://riseatseven.com/work/sixt/"
+    name: "SIXT",
+    year: "2023–2025",
+    tag: "Car rental",
+    headline: "An extra 3m clicks regionally through SEO",
+    color: "#cb7b3a",
+    url: "https://riseatseven.com/work/sixt/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/Logos/Client/Black/sixt-1.jpg?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847611&s=7dd66f58bc995fde07eaf029a20fdfc7",
   },
   {
-    id: 7670,
-    title: "Dojo - B2B",
-    year: "[2021-2025]",
-    description: "A B2B success story for Dojo card machines",
-    category: "Card Machines",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/dojo-go-product-shot-1.jpg?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847714&s=dd63f860a1924655216d5eb62cf5e592",
-    colour: "#fdd8c4",
-    link: "https://riseatseven.com/work/dojo/"
+    name: "Dojo - B2B",
+    year: "2021–2025",
+    tag: "Card Machines",
+    headline: "A B2B success story for Dojo card machines",
+    color: "#fdd8c4",
+    url: "https://riseatseven.com/work/dojo/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/dojo-go-product-shot-1.jpg?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847714&s=bd66606297d902f69b5597cc577c024b",
   },
   {
-    id: 19708,
-    title: "Magnet Trade - B2B",
-    year: "[2023-2024]",
-    description: "A full service SEO success story 170%+ increase",
-    category: "",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2026-02-07-at-17.01.43.png?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1770483725&s=381490e8c73ef79a1885309fd0b0c48a",
-    colour: "#d8c4fd",
-    link: "https://riseatseven.com/work/magnet-trade-b2b/"
+    name: "Magnet Trade - B2B",
+    year: "2023–2024",
+    tag: "Trade",
+    headline: "A full service SEO success story 170%+ increase",
+    color: "#d8c4fd",
+    url: "https://riseatseven.com/work/magnet-trade-b2b/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2026-02-07-at-17.01.43.png?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1770483725&s=9608e252248a4b2ddffaec7d45eede5b",
   },
   {
-    id: 16982,
-    title: "Leading E Sim brand globally",
-    year: "[2023-2025]",
-    description: "Increasing brand and non brand visibility UK/ES",
-    category: "Esims",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/eSIM-Europe-p1-what-is-eSIM-2-1.jpg?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1761234573&s=49e33faaf74314496fd5f00b47fe926c",
-    colour: "#cb7b3a",
-    link: "https://riseatseven.com/work/esim-case-study/"
+    name: "Leading E Sim brand",
+    year: "2023–2025",
+    tag: "Esims",
+    headline: "Increasing brand and non brand visibility UK/ES",
+    color: "#cb7b3a",
+    url: "https://riseatseven.com/work/esim-case-study/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/eSIM-Europe-p1-what-is-eSIM-2-1.jpg?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1761234573&s=71e6a673976355cd5f6f063b7fcef10d",
   },
   {
-    id: 17067,
-    title: "JD Sports",
-    year: "[2025]",
-    description: "65% up YoY in clicks for JDSports FR, IT, ES",
-    category: "Trainers",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/maxresdefault_2025-10-22-141838_nmnu.jpg?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1761142718&s=b0de9817445481a8f52dce0b5c443bbc",
-    colour: "#3a8ccb",
-    link: "https://riseatseven.com/work/jd-sports-/"
+    name: "JD Sports",
+    year: "2025",
+    tag: "Trainers",
+    headline: "65% up YoY in clicks for JDSports FR, IT, ES",
+    color: "#3a8ccb",
+    url: "https://riseatseven.com/work/jd-sports-/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/maxresdefault_2025-10-22-141838_nmnu.jpg?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1761142718&s=12d06985b7017711f29e3ce6aef304f3",
   },
   {
-    id: 8221,
-    title: "Parkdean Resorts",
-    year: "[2019-2025]",
-    description: "Dominating Google and AI search",
-    category: "Easter Breaks",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/easter-breaks.jpg?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847715&s=cbb1e369eeca98550153bca9743dbacb",
-    colour: "#d2b59d",
-    link: "https://riseatseven.com/work/parkdean-resorts-easter-breaks/"
+    name: "Parkdean Resorts",
+    year: "2019–2025",
+    tag: "Easter Breaks",
+    headline: "Dominating Google and AI search",
+    color: "#d2b59d",
+    url: "https://riseatseven.com/work/parkdean-resorts-easter-breaks/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/easter-breaks.jpg?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847715&s=381c81d4a44783a7bda73dd07a3a04ee",
   },
   {
-    id: 301,
-    title: "Pooky",
-    year: "[2025]",
-    description: "Driving demand for Pooky Rechargeable Lights",
-    category: "Rechargeable Lights",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/Pooky-Rechargable-Doorstop-Cordless-100-Straight-Empire-Pendant-Silk-Ikat-Shade-in-Black-and-Cream-Atlas-44-Single-chukka-Cordless-95-scaled-1-1.jpg?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847623&s=a42d0ad7a0f8458c7b22b128993d1d8b",
-    colour: "#39b0bd",
-    link: "https://riseatseven.com/work/pooky/"
+    name: "Pooky",
+    year: "2025",
+    tag: "Rechargeable Lights",
+    headline: "Driving demand for Pooky Rechargeable Lights",
+    color: "#39b0bd",
+    url: "https://riseatseven.com/work/pooky/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/Pooky-Rechargable-Doorstop-Cordless-100-Straight-Empire-Pendant-Silk-Ikat-Shade-in-Black-and-Cream-Atlas-44-Single-chukka-Cordless-95-scaled-1-1.jpg?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847623&s=c8f7c6f6625c568f08115b06804143d2",
   },
   {
-    id: 11781,
-    title: "Parkdean Resorts",
-    year: "[2019-2025]",
-    description: "Social search and multi channel content to #1",
-    category: "UK holidays",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/1.JPG?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751183703&s=39124d20abc57ddd5fe8d65337b36d2d",
-    colour: "#d29dd0",
-    link: "https://riseatseven.com/work/parkdean-resorts-social-search/"
+    name: "Parkdean Resorts",
+    year: "2019–2025",
+    tag: "UK holidays",
+    headline: "Social search and multi channel content to #1",
+    color: "#d29dd0",
+    url: "https://riseatseven.com/work/parkdean-resorts-social-search/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/1.JPG?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751183703&s=9d42dee239058b476893d2649a608a7d",
   },
   {
-    id: 27,
-    title: "Revolution Beauty",
-    year: "[2022-2025]",
-    description: "Building the UK's leading beauty dupe brand",
-    category: "Beauty Dupes",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-10-at-12.13.46.png?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847624&s=1297f5bff1af8057f9908e26956825ac",
-    colour: "#fecacc",
-    link: "https://riseatseven.com/work/revolution-beauty/"
+    name: "Revolution Beauty",
+    year: "2022–2025",
+    tag: "Beauty Dupes",
+    headline: "Building the UK's leading beauty dupe brand",
+    color: "#fecacc",
+    url: "https://riseatseven.com/work/revolution-beauty/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-10-at-12.13.46.png?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847624&s=10365ef99515fa381664a5b9294a3098",
   },
   {
-    id: 297,
-    title: "Lloyds Pharmacy",
-    year: "[2022-23]",
-    description: "Driving category leadership for STI tests",
-    category: "STI tests",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-07-04-at-12.50.54.png?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751629865&s=04aee1885f0d515e965b94f9bae6727a",
-    colour: "#60dcfb",
-    link: "https://riseatseven.com/work/lloyds-pharmacy/"
+    name: "Lloyds Pharmacy",
+    year: "2022–23",
+    tag: "STI tests",
+    headline: "Driving category leadership for STI tests",
+    color: "#60dcfb",
+    url: "https://riseatseven.com/work/lloyds-pharmacy/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-07-04-at-12.50.54.png?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1751629865&s=9c1e99f0f435b81cc6adf3917ee406f3",
   },
   {
-    id: 8004,
-    title: "PrettyLittleThing",
-    year: "[2021-2023]",
-    description: "Driving discovery for everything \"outfits\" for PLT",
-    category: "Outfits",
-    image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-14.43.56.png?w=2000&h=1500&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847626&s=d730c3765e685a8264bc8304fc54e357",
-    colour: "#fecacc",
-    link: "https://riseatseven.com/work/prettylittlething/"
-  }
+    name: "PrettyLittleThing",
+    year: "2021–2023",
+    tag: "Outfits",
+    headline: 'Driving discovery for everything "outfits" for PLT',
+    color: "#fecacc",
+    url: "https://riseatseven.com/work/prettylittlething/",
+    img: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-14.43.56.png?w=800&h=600&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847626&s=014efbb529a579b3171f4116ce49e0e5",
+  },
 ];
 
-export default function FeatureCard() {
-  const containerRef = useRef(null);
-  const imagesContainerRef = useRef(null);
-  const headingsContainerRef = useRef(null);
-  const [activeItem, setActiveItem] = useState(null);
-  const [hovering, setHovering] = useState(false);
-  const [imagesHeight, setImagesHeight] = useState(0);
-  const [headingsHeight, setHeadingsHeight] = useState(0);
+function isDarkColor(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 < 140;
+}
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  useEffect(() => {
-    if (imagesContainerRef.current) {
-      setImagesHeight(imagesContainerRef.current.offsetHeight);
-    }
-    if (headingsContainerRef.current) {
-      setHeadingsHeight(headingsContainerRef.current.offsetHeight);
-    }
-  }, []);
-
-  // Calculate Y movement for images
-  const imagesY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, -(imagesHeight - window.innerHeight)]
+function TagPill({ tag, textColor, bgColor }) {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "8px",
+        background: bgColor,
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        borderRadius: "999px",
+        color: textColor,
+        fontSize: "13px",
+        fontWeight: "500",
+        padding: "8px 14px",
+        lineHeight: "1",
+      }}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      {tag}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+        <polyline points="17 6 23 6 23 12" />
+      </svg>
+    </div>
   );
+}
 
-  // Calculate Y movement for headings
-  const headingsY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [150, -(headingsHeight - 300)]
-  );
+function WorkCard({ item, isHoveredFromLeft }) {
+  const [hovered, setHovered] = useState(false);
+  const textColor = isDarkColor(item.color) ? "#ffffff" : "#111212";
+  const isActive = hovered || isHoveredFromLeft;
 
   return (
-    <section className="w-full pb-12 xl:pb-24">
-      <div className="w-full px-4 md:px-7">
+    <a
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "grid",
+        borderRadius: "20px",
+        overflow: "hidden",
+        marginBottom: "28px",
+        cursor: "pointer",
+        textDecoration: "none",
+        position: "relative",
+        transition: "transform 0.3s ease",
+        transform: isActive ? "scale(0.98)" : "scale(1)",
+      }}
+    >
+      {/* Image Container */}
+      <div
+        style={{
+          gridColumn: "1",
+          gridRow: "1",
+          aspectRatio: "4/3",
+          overflow: "hidden",
+          position: "relative",
+        }}
+      >
+        <img
+          src={item.img}
+          alt={item.name}
+          loading="lazy"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+            transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            transform: isActive ? "scale(1.08)" : "scale(1)",
+          }}
+        />
+      </div>
+
+      {/* Tag Pill - Top Right */}
+      <div
+        style={{
+          gridColumn: "1",
+          gridRow: "1",
+          padding: "16px",
+          zIndex: "3",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-start",
+          pointerEvents: "none",
+        }}
+      >
+        <TagPill tag={item.tag} textColor="#ffffff" bgColor="rgba(255,255,255,0.2)" />
+      </div>
+
+      {/* Mobile Info Overlay */}
+      <div
+        style={{
+          gridColumn: "1",
+          gridRow: "1",
+          zIndex: "3",
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "flex-start",
+          padding: "20px",
+          position: "relative",
+          pointerEvents: "none",
+        }}
+        className="mobile-info-overlay"
+      >
         <div
-          ref={containerRef}
-          className="w-full relative -my-7 flex overflow-hidden pointer-fine:overflow-visible"
-          style={{ height: `${imagesHeight}px` }}
+          style={{
+            position: "absolute",
+            inset: "0px",
+            background: "linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0) 70%)",
+            zIndex: "-1",
+            borderRadius: "20px",
+          }}
+        />
+        <div>
+          <div
+            style={{
+              color: "#ffffff",
+              fontSize: "11px",
+              fontWeight: "500",
+              marginBottom: "6px",
+              opacity: "0.8",
+            }}
+          >
+            {item.year}
+          </div>
+          <div
+            style={{
+              color: "#ffffff",
+              fontSize: "clamp(24px, 5vw, 32px)",
+              fontWeight: "500",
+              letterSpacing: "-0.03em",
+              lineHeight: "1.1",
+            }}
+          >
+            {item.name}
+          </div>
+        </div>
+      </div>
+
+      {/* Hover Overlay */}
+      <div
+        style={{
+          gridColumn: "1",
+          gridRow: "1",
+          zIndex: "4",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "24px",
+          background: item.color,
+          color: textColor,
+          opacity: isActive ? "1" : "0",
+          transition: "opacity 0.35s ease",
+          borderRadius: "20px",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "clamp(22px, 3vw, 38px)",
+            fontWeight: "500",
+            letterSpacing: "-0.03em",
+            lineHeight: "1.2",
+          }}
         >
-          <div className="w-full py-7 top-0 h-screen-fix-110 pointer-fine:h-screen-fix pointer-fine:sticky">
-            <div className="w-full h-full overflow-hidden bg-grey-900 rounded-3xl grid grid-cols-12 px-5 lg:pl-8 lg:pr-8 xl:pl-10 xl:pr-10">
-              
-              {/* Left Side - Headings (Desktop) */}
-              <div className="relative col-span-12 items-start hidden lg:flex lg:flex-row lg:items-center lg:col-span-6 lg:h-[96svh] 4xl:col-span-6">
-                <div className="flex flex-col items-start relative z-10 h-full pt-16 lg:pt-24 lg:pb-32 lg:gap-y-20">
-                  <h2 className="inline-flex flex-wrap text-balance relative text-left justify-start text-white text-md/tight lg:text-lg/tight xl:text-xl/tight 4xl:text-2xl/none font-sans-primary font-medium tracking-tight">
-                    Featured Work
-                  </h2>
-                  
-                  <div className="relative flex-1 overflow-hidden hidden pr-5 lg:inline-block">
-                    <div className="absolute top-0 left-0 w-full h-1/3 z-20 pointer-events-none bg-gradient-to-b from-grey-900 hidden lg:flex"></div>
-                    <div className="absolute bottom-0 left-0 w-full h-1/3 z-20 pointer-events-none bg-gradient-to-t from-grey-900 hidden lg:flex"></div>
-                    
-                    <motion.div 
-                      ref={headingsContainerRef}
-                      className="grid gap-y-2 relative z-10 2xl:gap-y-3 4xl:gap-y-5"
-                      style={{ y: headingsY }}
-                    >
-                      {workItems.map((item) => (
-                        <motion.div
-                          key={item.id}
-                          className="relative transition-transform duration-300"
-                          animate={{
-                            x: (hovering && activeItem === item.id) ? 12 : 0
-                          }}
-                        >
-                          <a
-                            href={item.link}
-                            className="flex items-start gap-x-2 group"
-                            onMouseEnter={() => {
-                              setHovering(true);
-                              setActiveItem(item.id);
-                            }}
-                            onMouseLeave={() => {
-                              setHovering(false);
-                              setActiveItem(null);
-                            }}
-                          >
-                            <div className="inline-flex flex-wrap text-balance relative text-left justify-start text-white text-5xl/none lg:text-6xl/none xl:text-7xl/0.9 3xl:text-7.5xl/0.9 4xl:text-8xl/0.9 font-sans-primary font-medium tracking-tight">
-                              {item.title}
-                            </div>
-                            <div className="text-white text-xs font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              {item.year}
-                            </div>
-                          </a>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  </div>
-                </div>
-              </div>
+          {item.headline}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "flex-end",
+            marginTop: "20px",
+          }}
+        >
+          <TagPill tag={item.tag} textColor={textColor} bgColor="rgba(255,255,255,0.15)" />
+        </div>
+      </div>
+    </a>
+  );
+}
 
-              {/* Right Side - Images */}
-              <motion.div 
-                ref={imagesContainerRef}
-                className="col-span-12 grid pt-7 pb-14 lg:col-span-6 lg:col-start-7 3xl:col-span-5 3xl:col-start-8 4xl:col-span-5 4xl:col-start-8"
-                style={{ y: imagesY }}
+export default function FeaturedWorkShowcase() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredNameIndex, setHoveredNameIndex] = useState(null);
+  const cardRefs = useRef([]);
+  const nameRefs = useRef([]);
+  const trackRef = useRef(null);
+  const leftPanelRef = useRef(null);
+  const rightScrollRef = useRef(null);
+  const isScrollingFromRight = useRef(false);
+  const isScrollingFromLeft = useRef(false);
+
+  // Update active index based on scroll position of the right panel
+  useEffect(() => {
+    const rightPanel = rightScrollRef.current;
+    if (!rightPanel) return;
+
+    const updateActiveIndex = () => {
+      if (isScrollingFromLeft.current) return;
+      
+      const scrollTop = rightPanel.scrollTop;
+      const cardHeight = 380;
+      const newIndex = Math.min(
+        Math.floor(scrollTop / cardHeight),
+        cases.length - 1
+      );
+      if (newIndex !== activeIndex) {
+        setActiveIndex(newIndex);
+      }
+    };
+
+    rightPanel.addEventListener("scroll", updateActiveIndex, { passive: true });
+    updateActiveIndex();
+    return () => rightPanel.removeEventListener("scroll", updateActiveIndex);
+  }, [activeIndex]);
+
+  // Scroll the name list to keep the active name centered
+  useEffect(() => {
+    if (!trackRef.current || !leftPanelRef.current) return;
+    const nameContainer = leftPanelRef.current;
+    const containerHeight = nameContainer.clientHeight;
+    const nameHeight = 88;
+    const totalHeight = cases.length * nameHeight;
+    const maxOffset = Math.max(0, totalHeight - containerHeight + 100);
+    const targetOffset = activeIndex * nameHeight - containerHeight / 2 + nameHeight / 2;
+    const clampedOffset = Math.min(Math.max(targetOffset, 0), maxOffset);
+    
+    trackRef.current.style.transform = `translateY(-${clampedOffset}px)`;
+  }, [activeIndex]);
+
+  // Sync right panel scroll when clicking on name
+  const handleNameClick = (index) => {
+    if (rightScrollRef.current) {
+      isScrollingFromLeft.current = true;
+      const cardHeight = 380;
+      rightScrollRef.current.scrollTo({
+        top: index * cardHeight,
+        behavior: "smooth",
+      });
+      setActiveIndex(index);
+      setTimeout(() => {
+        isScrollingFromLeft.current = false;
+      }, 500);
+    }
+  };
+
+  // Handle hover on left side names
+  const handleNameHover = (index) => {
+    setHoveredNameIndex(index);
+  };
+
+  const handleNameLeave = () => {
+    setHoveredNameIndex(null);
+  };
+
+  // Sync left panel scroll when user scrolls anywhere in the section
+  useEffect(() => {
+    const handleWindowScroll = () => {
+      if (isScrollingFromRight.current || isScrollingFromLeft.current) return;
+      
+      const section = document.getElementById("featured-work-section");
+      if (!section) return;
+      
+      const rect = section.getBoundingClientRect();
+      const scrollPercent = (window.scrollY - rect.top) / (rect.height - window.innerHeight);
+      if (scrollPercent >= 0 && scrollPercent <= 1 && rightScrollRef.current) {
+        const maxScroll = rightScrollRef.current.scrollHeight - rightScrollRef.current.clientHeight;
+        const targetScroll = scrollPercent * maxScroll;
+        rightScrollRef.current.scrollTop = targetScroll;
+      }
+    };
+
+    window.addEventListener("scroll", handleWindowScroll);
+    return () => window.removeEventListener("scroll", handleWindowScroll);
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        @media (min-width: 901px) {
+          .mobile-info-overlay {
+            display: none !important;
+          }
+        }
+        
+        @media (max-width: 900px) {
+          .desktop-only {
+            display: none !important;
+          }
+          .mobile-title {
+            display: block !important;
+          }
+        }
+        
+        @media (min-width: 901px) {
+          .mobile-title {
+            display: none !important;
+          }
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #2a2a2a;
+          border-radius: 4px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #555;
+          border-radius: 4px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #777;
+        }
+        
+        .name-text {
+          transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+          display: inline-block;
+        }
+        
+        .name-item:hover .name-text {
+          transform: translateX(8px);
+        }
+        
+        body {
+          margin: 0;
+          background: #f5f5f3;
+        }
+        
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+          .featured-section-padding {
+            padding: 24px 16px 64px !important;
+          }
+          .card-bottom-margin {
+            margin-bottom: 20px !important;
+          }
+        }
+      `}</style>
+
+      <section
+        id="featured-work-section"
+        className="featured-section-padding"
+        style={{
+          padding: "48px 24px 96px",
+          background: "#f5f5f3",
+          minHeight: "100vh",
+        }}
+      >
+        <div
+          style={{
+            background: "#111212",
+            borderRadius: "28px",
+            overflow: "hidden",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            minHeight: "calc(100vh - 120px)",
+            position: "relative",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          }}
+        >
+          {/* LEFT PANEL - Sticky Names (Desktop Only) */}
+          <div
+            ref={leftPanelRef}
+            className="desktop-only"
+            style={{
+              position: "sticky",
+              top: "0px",
+              height: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              padding: "48px 32px",
+              overflow: "hidden",
+              background: "#111212",
+            }}
+          >
+            <h2
+              style={{
+                color: "#ffffff",
+                fontSize: "clamp(20px, 2vw, 28px)",
+                fontWeight: "500",
+                letterSpacing: "-0.03em",
+                marginBottom: "56px",
+                flexShrink: "0",
+              }}
+            >
+              Featured Work
+            </h2>
+
+            <div style={{ position: "relative", flex: "1", overflow: "hidden" }}>
+              {/* Gradient Fades */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  right: "0",
+                  height: "80px",
+                  background: "linear-gradient(to bottom, #111212, transparent)",
+                  zIndex: "20",
+                  pointerEvents: "none",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "0",
+                  left: "0",
+                  right: "0",
+                  height: "80px",
+                  background: "linear-gradient(to top, #111212, transparent)",
+                  zIndex: "20",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Scrolling Names Track */}
+              <div
+                ref={trackRef}
+                style={{
+                  position: "relative",
+                  zIndex: "5",
+                  transition: "transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1)",
+                  willChange: "transform",
+                }}
               >
-                <div className="mb-5 lg:hidden">
-                  <h2 className="inline-flex flex-wrap text-balance relative text-left justify-start text-white text-md/tight font-sans-primary font-medium tracking-tight">
-                    Featured Work
-                  </h2>
-                </div>
-
-                {workItems.map((item) => (
-                  <WorkCard
-                    key={item.id}
-                    item={item}
-                    isActive={hovering && activeItem === item.id}
-                    onMouseEnter={() => {
-                      setHovering(true);
-                      setActiveItem(item.id);
+                {cases.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="name-item"
+                    style={{
+                      padding: "12px 0",
+                      marginBottom: "8px",
+                      cursor: "pointer",
                     }}
-                    onMouseLeave={() => {
-                      setHovering(false);
-                      setActiveItem(null);
-                    }}
-                  />
+                    onClick={() => handleNameClick(idx)}
+                    onMouseEnter={() => handleNameHover(idx)}
+                    onMouseLeave={handleNameLeave}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: "12px",
+                        flexWrap: "wrap",
+                        opacity: idx === activeIndex ? "1" : "0.35",
+                        transition: "opacity 0.35s ease",
+                      }}
+                    >
+                      <span
+                        className="name-text"
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "clamp(28px, 4vw, 52px)",
+                          fontWeight: "500",
+                          letterSpacing: "-0.04em",
+                          lineHeight: "0.95",
+                        }}
+                      >
+                        {item.name}
+                      </span>
+                      <span
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "12px",
+                          fontWeight: "500",
+                          opacity: "0.55",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {item.year}
+                      </span>
+                    </div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
+          </div>
+
+          {/* RIGHT PANEL - Scrollable Cards */}
+          <div
+            ref={rightScrollRef}
+            className="custom-scrollbar"
+            style={{
+              padding: "32px 28px 56px",
+              maxHeight: "100vh",
+              overflowY: "auto",
+              background: "#111212",
+            }}
+          >
+            {/* Mobile Title */}
+            <h2
+              className="mobile-title"
+              style={{
+                color: "#ffffff",
+                fontSize: "24px",
+                fontWeight: "500",
+                marginBottom: "28px",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Featured Work
+            </h2>
+
+            {cases.map((item, idx) => (
+              <div key={idx} className="card-bottom-margin">
+                <WorkCard 
+                  item={item} 
+                  isHoveredFromLeft={hoveredNameIndex === idx}
+                />
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Explore Button */}
-        <div className="flex justify-center mt-3 lg:mt-7">
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
           <a
             href="https://riseatseven.com/work/"
-            className="w-full group inline-flex shrink-0 justify-center gap-x-2 items-center relative leading-tight tracking-tightish capitalize font-sans-primary font-medium overflow-hidden border border-transparent cursor-pointer focus:outline-none md:w-auto text-base px-6 py-3 rounded-3xl transition-all duration-300 hover:rounded-xl bg-white text-grey-900"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              background: "#ffffff",
+              color: "#111212",
+              borderRadius: "999px",
+              padding: "14px 32px",
+              fontSize: "15px",
+              fontWeight: "500",
+              textDecoration: "none",
+              letterSpacing: "-0.01em",
+              transition: "all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1)",
+              cursor: "pointer",
+              border: "none",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderRadius = "16px";
+              e.currentTarget.style.transform = "scale(0.97)";
+              e.currentTarget.style.boxShadow = "0 10px 20px -5px rgba(0, 0, 0, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderRadius = "999px";
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
           >
-            <div className="relative overflow-hidden">
-              <div className="transition-transform duration-300 group-hover:-translate-y-6">
-                <div className="flex items-center gap-x-2">
-                  <span>Explore Our Work</span>
-                  <span className="inline-block align-middle motion-safe:transition text-xs mt-1" aria-hidden="true">
-                    <i className="fa-regular fa-sharp fa-arrow-up-right"></i>
-                  </span>
-                </div>
-              </div>
-              <div className="transition-transform duration-300 absolute top-0 left-0 translate-y-6 group-hover:translate-y-0">
-                <div className="flex items-center gap-x-2">
-                  <span>Explore Our Work</span>
-                  <span className="inline-block align-middle motion-safe:transition text-xs mt-1" aria-hidden="true">
-                    <i className="fa-regular fa-sharp fa-arrow-up-right"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
+            Explore Our Work
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </a>
         </div>
-      </div>
-    </section>
-  );
-}
-
-// Work Card Component
-function WorkCard({ item, isActive, onMouseEnter, onMouseLeave }) {
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  return (
-    <a
-      href={item.link}
-      className="grid group rounded-2xl overflow-hidden mb-5 lg:rounded-2xl lg:mb-7 circle-mask-container relative"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      {/* Image Container with Scale Effect */}
-      <div className="col-start-1 row-start-1 transition-transform duration-700 ease-out group-hover:scale-105">
-        <div className="relative overflow-hidden w-full" style={{ paddingTop: "75%" }}>
-          <picture className="absolute top-0 left-0 w-full h-full">
-            <img
-              src={item.image}
-              alt={item.title}
-              className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${
-                isImageLoaded ? "opacity-100" : "opacity-0"
-              }`}
-              onLoad={() => setIsImageLoaded(true)}
-              loading="lazy"
-            />
-          </picture>
-        </div>
-      </div>
-
-      {/* Top Badge - Desktop & Mobile */}
-      {item.category && (
-        <div className="col-start-1 row-start-1 p-3 z-30 flex justify-end items-start lg:items-end lg:p-5">
-          <div className="shrink-0 inline-flex items-center rounded-full tracking-tight font-medium leading-none text-white bg-white/20 backdrop-blur-sm text-sm gap-x-3 py-2.5 px-3.5 lg:text-base">
-            <i className="fa-regular fa-sharp fa-magnifying-glass" aria-hidden="true"></i>
-            <div>{item.category}</div>
-            <i className="fa-regular fa-sharp fa-chart-line-up" aria-hidden="true"></i>
-          </div>
-        </div>
-      )}
-
-      {/* Mobile Info (Visible only on mobile) */}
-      <div className="col-start-1 row-start-1 p-3 z-30 relative flex justify-start items-end lg:hidden">
-        <div className="grid gap-y-1 relative z-20">
-          <div className="text-white text-xs font-medium mt-2">{item.year}</div>
-          <div className="inline-flex flex-wrap text-balance relative text-left justify-start text-white text-3xl/none lg:text-5xl/none xl:text-6xl/none 3xl:text-7xl/0.9 font-sans-primary font-medium tracking-tight">
-            {item.title}
-          </div>
-        </div>
-        <div className="absolute w-full bottom-0 left-0 h-32 bg-gradient-to-t from-black z-10 opacity-70"></div>
-      </div>
-
-      {/* Hover Overlay - Full Card Mask Effect */}
-      <motion.div
-        className="col-start-1 row-start-1 grid-cols-12 flex flex-col items-start justify-between z-40 p-3 transition-all duration-500 lg:p-5 absolute inset-0 opacity-0 hover:opacity-100 circle-mask"
-        style={{ backgroundColor: item.colour, color: "#111212" }}
-        initial={false}
-        animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-      >
-        <div className="inline-flex flex-wrap text-balance relative text-left justify-start text-current text-3xl/none lg:text-4xl/none xl:text-5xl/none 3xl:text-6xl/none font-sans-primary font-medium tracking-tight">
-          {item.description}
-        </div>
-        
-        <div className="w-full flex items-end justify-between">
-          <div className="w-8 lg:w-24"></div>
-          {item.category && (
-            <div className="shrink-0 inline-flex items-center rounded-full tracking-tight font-medium leading-none text-current bg-white/15 backdrop-blur-sm text-sm gap-x-3 py-2.5 px-3.5 lg:text-base">
-              <i className="fa-regular fa-sharp fa-magnifying-glass" aria-hidden="true"></i>
-              <div>{item.category}</div>
-              <i className="fa-regular fa-sharp fa-chart-line-up" aria-hidden="true"></i>
-            </div>
-          )}
-        </div>
-      </motion.div>
-    </a>
+      </section>
+    </>
   );
 }
