@@ -1,0 +1,42 @@
+/* Extracted from src/components/Home/Marqueebanner.jsx inline <style>. */
+
+.marquee-global-wrapper {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.marquee-heading {
+  display: inline-flex;
+  flex-wrap: wrap;
+  text-align: left;
+  justify-content: start;
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  font-size: clamp(3rem, 10vw, 6rem);
+  line-height: 0.9;
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .marquee-heading {
+    font-size: clamp(3.5rem, 8vw, 6rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .marquee-heading {
+    font-size: clamp(4rem, 6vw, 7rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .marquee-heading {
+    font-size: 8rem;
+  }
+}
+

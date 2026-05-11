@@ -1,0 +1,19 @@
+/* Extracted from src/components/Home/RiseAtSeven.jsx inline <style> */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+
+.ras-heading {
+  white-space: nowrap;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(52px, 11vw, 120px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #111;
+  display: inline-flex;
+  align-items: baseline;
+  position: absolute;
+  left: 0;
+  will-change: transform;
+}
+

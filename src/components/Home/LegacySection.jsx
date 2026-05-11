@@ -1,374 +1,472 @@
+// LegacySection.jsx
 import React, { useEffect, useRef, useState } from 'react';
-import Swiper from 'swiper';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import 'swiper/css';
-import 'swiper/css/pagination';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const LegacySection = () => {
-  const sectionRef = useRef(null);
   const triggerRef = useRef(null);
-  const itemsRef = useRef([]);
-  const swiperRef = useRef(null);
-  const swiperInstanceRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   const cardsData = [
     {
       id: 0,
-      bgColor: "bg-black",
-      bgClass: "bg-black",
-      textColor: "text-white",
-      headingColor: "text-white",
+      bgColor: "#000000",
+      textColor: "#ffffff",
       image: "https://rise-atseven.transforms.svdcdn.com/production/images/b2087e0cd3f699d3efc76f809ec72a85a6ab378e-1080x1350.jpg",
-      imageWebp: "https://rise-atseven.transforms.svdcdn.com/production/images/b2087e0cd3f699d3efc76f809ec72a85a6ab378e-1080x1350.jpg?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847630&s=42bab5d18e9b50941a53e67e251f6c9f",
       title: "Pioneers",
       description: "We're dedicated to creating the industry narrative that others follow 3 years from now. We paved the path for creative SEO, multi-channel search with Digital PR, and Social Search and we will continue to do it.",
       description2: "We're on a mission to be the first search-first agency to win a Cannes Lion disrupting the status quo."
     },
     {
       id: 1,
-      bgColor: "bg-mint",
-      bgClass: "bg-mint",
-      textColor: "text-grey-900",
-      headingColor: "text-grey-900",
+      bgColor: "#7ee8c8",
+      textColor: "#1a1a1a",
       image: "https://rise-atseven.transforms.svdcdn.com/production/images/d4df0d30-d590-4e94-9056-9491f4beacba.JPG",
-      imageWebp: "https://rise-atseven.transforms.svdcdn.com/production/images/d4df0d30-d590-4e94-9056-9491f4beacba.JPG?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847714&s=adefb293215e963a4d99827a8910457b",
       title: "Award Winning",
       description: "A roll top bath full of 79 awards. Voted The Drum's best agency outside of London. We are official judges for industry awards including Global Search Awards and Global Content Marketing Awards.",
       description2: null
     },
     {
       id: 2,
-      bgColor: "bg-white",
-      bgClass: "bg-white",
-      textColor: "text-grey-900",
-      headingColor: "text-grey-900",
+      bgColor: "#ffffff",
+      textColor: "#1a1a1a",
       image: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-23.15.19.png",
-      imageWebp: "https://rise-atseven.transforms.svdcdn.com/production/images/Screenshot-2025-06-23-at-23.15.19.png?w=400&h=400&q=80&fm=webp&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.5&dm=1750847626&s=7e53aac87fca12e41a4aa3b3d4961e31",
       title: "Speed",
       description: "People ask us why we are called Rise at Seven? Ever heard the saying Early Bird catches the worm? Google is moving fast, but humans are moving faster. We chase consumers, not algorithms. We've created a service which takes ideas to result within 60 minutes.",
       description2: null
     }
   ];
 
-  // Check for mobile
   useEffect(() => {
-    const checkMobile = () => {
+    const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Initialize Swiper for mobile
+  // پروgressive scroll animation - একটার পর একটা
   useEffect(() => {
-    if (isMobile && swiperRef.current && !swiperInstanceRef.current) {
-      swiperInstanceRef.current = new Swiper(swiperRef.current, {
-        slidesPerView: 1,
-        spaceBetween: 15,
-        loop: true,
-        speed: 700,
-        breakpoints: {
-          640: {
-            slidesPerView: 1.55,
-          },
-        },
-        pagination: {
-          el: `.js-pagination-43`,
-          type: 'progressbar',
-        },
-      });
-    }
+    if (isMobile) return;
 
-    return () => {
-      if (swiperInstanceRef.current) {
-        swiperInstanceRef.current.destroy(true, true);
-        swiperInstanceRef.current = null;
-      }
-    };
-  }, [isMobile]);
+    const cards = document.querySelectorAll('.stack-card-desktop');
+    const trigger = triggerRef.current;
+    
+    if (!cards.length || !trigger) return;
 
-  // GSAP Scroll Animation for Desktop
-  useEffect(() => {
-    if (isMobile || !triggerRef.current) return;
+    let ticking = false;
 
-    const items = itemsRef.current;
-
-    gsap.to(items, {
-      yPercent: -100,
-      rotate: -50,
-      stagger: 1,
-      ease: 'power2.inOut',
-      duration: 3,
-      scrollTrigger: {
-        trigger: triggerRef.current,
-        start: 'top 30%',
-        end: 'bottom -50%',
-        scrub: true,
-        onEnter: () => {
-          window.dispatchEvent(new CustomEvent('component-header', { detail: { hideHeaderOverride: true } }));
-        },
-        onLeave: () => {
-          window.dispatchEvent(new CustomEvent('component-header', { detail: { hideHeaderOverride: false } }));
-        },
-        onLeaveBack: () => {
-          window.dispatchEvent(new CustomEvent('component-header', { detail: { hideHeaderOverride: false } }));
-        },
-        onEnterBack: () => {
-          window.dispatchEvent(new CustomEvent('component-header', { detail: { hideHeaderOverride: true } }));
+    const animateCards = () => {
+      const rect = trigger.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Total scroll area (300vh)
+      const totalScrollHeight = windowHeight * 3;
+      const scrolled = -rect.top;
+      
+      // Progress 0 to 1
+      let progress = scrolled / totalScrollHeight;
+      progress = Math.min(0.99, Math.max(0, progress));
+      
+      // Each card has its own progress range
+      // Card 0: 0% to 33% scroll - moves out first
+      // Card 1: 33% to 66% scroll - moves out second  
+      // Card 2: 66% to 100% scroll - moves out last
+      
+      cards.forEach((card, idx) => {
+        // Define scroll range for each card
+        const startProgress = idx * 0.33;
+        const endProgress = (idx + 1) * 0.33;
+        
+        // Calculate card-specific progress
+        let cardProgress = 0;
+        if (progress >= startProgress) {
+          cardProgress = (progress - startProgress) / (endProgress - startProgress);
+          cardProgress = Math.min(1, Math.max(0, cardProgress));
         }
-      }
-    });
+        
+        // Easing for smoother motion
+        const eased = Math.pow(cardProgress, 1.2);
+        
+        // Target transforms
+        const startY = 0;
+        const startRot = 0;
+        const endY = -80;
+        const endRot = -45;
+        
+        const currentY = startY + (endY - startY) * eased;
+        const currentRot = startRot + (endRot - startRot) * eased;
+        
+        // Opacity effect
+        const opacity = 1 - eased * 0.8;
+        
+        card.style.transform = `translateY(${currentY}vh) rotate(${currentRot}deg)`;
+        card.style.opacity = opacity;
+      });
+      
+      // Header hide/show
+      const shouldHide = progress > 0.05 && progress < 0.95;
+      window.dispatchEvent(new CustomEvent('component-header', { 
+        detail: { hideHeaderOverride: shouldHide } 
+      }));
+    };
 
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          animateCards();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    animateCards();
+    
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [isMobile]);
 
-  const Card = ({ data, rotateAngle = 0, isDesktop = false }) => {
-    const getBgStyles = () => {
-      switch(data.bgClass) {
-        case 'bg-black':
-          return { backgroundColor: '#000000', color: '#ffffff' };
-        case 'bg-mint':
-          return { backgroundColor: '#7ee8c8', color: '#1a1a1a' };
-        case 'bg-white':
-          return { backgroundColor: '#ffffff', color: '#1a1a1a' };
-        default:
-          return { backgroundColor: '#000000', color: '#ffffff' };
-      }
-    };
-
-    const bgStyles = getBgStyles();
-
+  const Card = ({ data, rotateAngle = 0, isDesktop = false, index = 0 }) => {
     return (
       <div 
-        className="w-full flex-col text-center rounded-2xl grid p-7 lg:items-center lg:rounded-3xl lg:aspect-square xl:py-10 xl:px-14"
+        className="card"
         style={{
-          ...bgStyles,
-          display: 'grid',
-          borderRadius: '16px',
-          padding: '28px 20px',
-          transform: isDesktop ? `rotate(${rotateAngle}deg)` : 'none'
+          backgroundColor: data.bgColor,
+          color: data.textColor,
+          transform: isDesktop ? `rotate(${rotateAngle}deg)` : 'none',
         }}
       >
-        <div className="col-start-1 row-start-1 flex flex-col text-center lg:items-center gap-y-3 md:gap-y-5">
-          
-          {/* Image Container */}
-          <div className="rounded-xl overflow-hidden w-full aspect-4/3 relative lg:aspect-1/1 lg:rounded-2xl lg:w-48 4xl:w-56">
-            <picture>
-              <source type="image/webp" srcSet={data.imageWebp} />
-              <img 
-                src={data.image}
-                alt={data.title}
-                className="absolute top-0 left-0 w-full h-full object-cover transition-opacity"
-                style={{ opacity: 1 }}
-                loading="lazy"
-                onLoad={(e) => e.target.style.opacity = '1'}
-              />
-            </picture>
-          </div>
-
-          {/* Content */}
-          <div className="flex flex-col items-center gap-y-4">
-            <h2 
-              className="inline-flex flex-wrap text-balance relative text-center justify-center text-3xl/none lg:text-5xl/none xl:text-6xl/none 3xl:text-7xl/0.9 font-sans-primary font-medium tracking-tight"
-              style={{ color: bgStyles.color }}
-            >
-              {data.title}
-            </h2>
-            
-            <div className="w-full">
-              <p className="text-sm font-sans-primary leading-normal text-pretty mb-5 lg:text-base" style={{ color: bgStyles.color, marginBottom: data.description2 ? '20px' : '0' }}>
-                {data.description}
-              </p>
-              {data.description2 && (
-                <p className="text-sm font-sans-primary leading-normal text-pretty mb-0 lg:text-base" style={{ color: bgStyles.color }}>
-                  {data.description2}
-                </p>
-              )}
-            </div>
-          </div>
+        <div className="card-image">
+          <img src={data.image} alt={data.title} loading="lazy" />
+        </div>
+        <h2 className="card-title">{data.title}</h2>
+        <div className="card-description">
+          <p>{data.description}</p>
+          {data.description2 && <p>{data.description2}</p>}
         </div>
       </div>
     );
   };
 
-  // Mobile View
-  const MobileView = () => (
-    <div className="w-full py-10 px-4 md:px-7 gap-y-3 md:gap-y-5">
-      <div className="flex justify-center mb-3">
-        <h2 className="inline-flex flex-wrap text-balance relative text-left justify-start text-grey-900 text-md/tight lg:text-lg/tight xl:text-xl/tight 4xl:text-2xl/none font-sans-primary font-medium tracking-tight">
-          Legacy In The Making
-        </h2>
-      </div>
+  // Mobile Carousel (with dots and progress bar)
+  const MobileCarousel = () => {
+    const [activeIndex, setActiveIndex] = useState(0);
+    const touchStartX = useRef(0);
+    const touchEndX = useRef(0);
 
-      <div className="w-full swiper js-carousel-43" ref={swiperRef}>
-        <div className="!ease-smooth flex swiper-wrapper">
-          {cardsData.map((card) => (
-            <div key={card.id} className="!flex !h-auto swiper-slide">
-              <Card data={card} />
-            </div>
+    const nextSlide = () => {
+      setActiveIndex((prev) => (prev + 1) % cardsData.length);
+    };
+
+    const prevSlide = () => {
+      setActiveIndex((prev) => (prev - 1 + cardsData.length) % cardsData.length);
+    };
+
+    const handleTouchStart = (e) => {
+      touchStartX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      if (touchStartX.current - touchEndX.current > 50) {
+        nextSlide();
+      }
+      if (touchStartX.current - touchEndX.current < -50) {
+        prevSlide();
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      touchEndX.current = e.touches[0].clientX;
+    };
+
+    return (
+      <div className="mobile-carousel">
+        <div className="mobile-header">
+          <h2>Legacy In The Making</h2>
+        </div>
+        <div 
+          className="carousel-container"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div 
+            className="carousel-track"
+            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          >
+            {cardsData.map((card, idx) => (
+              <div key={card.id} className="carousel-slide">
+                <Card data={card} index={idx} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="carousel-dots">
+          {cardsData.map((_, idx) => (
+            <button
+              key={idx}
+              className={`dot ${activeIndex === idx ? 'active' : ''}`}
+              onClick={() => setActiveIndex(idx)}
+            />
           ))}
         </div>
-      </div>
-
-      <div className="w-full relative mt-3">
-        <div className="w-full swiper-pagination js-pagination-43"></div>
-      </div>
-    </div>
-  );
-
-  // Desktop View
-  const DesktopView = () => (
-    <div className="w-full relative hidden lg:flex js-trigger-43" ref={triggerRef} style={{ height: '300vh' }}>
-      <div className="w-full h-screen-fix h-svh sticky top-0 left-0 overflow-hidden">
-        
-        {/* Header */}
-        <div className="absolute top-0 left-0 w-full flex justify-center mt-10 3xl:mt-16">
-          <h2 className="inline-flex flex-wrap text-balance relative text-left justify-start text-grey-900 text-md/tight lg:text-lg/tight xl:text-xl/tight 4xl:text-2xl/none font-sans-primary font-medium tracking-tight">
-            Legacy In The Making
-          </h2>
-        </div>
-
-        {/* Cards */}
-        {cardsData.map((card, index) => (
+        <div className="carousel-progress">
           <div 
-            key={card.id}
-            ref={(el) => itemsRef.current[index] = el}
-            className="w-full h-full absolute left-0 flex items-center justify-center top-8 js-item-43"
-            style={{ zIndex: cardsData.length - index }}
-          >
-            <div className="w-full max-w-lg xl:max-w-xl 4xl:max-w-2xl">
-              <Card data={card} rotateAngle={4 + (index * 4)} isDesktop={true} />
-            </div>
-          </div>
-        ))}
+            className="progress-bar"
+            style={{ width: `${((activeIndex + 1) / cardsData.length) * 100}%` }}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
-    <div className="w-full">
-      {/* Mobile - visible below lg */}
-      <div className="lg:hidden">
-        <MobileView />
+    <section className="legacy-section">
+      {/* Mobile View */}
+      <div className="mobile-view">
+        <MobileCarousel />
       </div>
 
-      {/* Desktop - visible lg and above */}
-      <div className="hidden lg:flex">
-        <DesktopView />
+      {/* Desktop View - Sequential Card Animation */}
+      <div className="desktop-view">
+        <div className="desktop-scroll-area" ref={triggerRef}>
+          <div className="desktop-sticky">
+            <h2 className="desktop-title">Legacy In The Making</h2>
+            <div className="desktop-cards-container">
+              {cardsData.map((card, index) => (
+                <div 
+                  key={card.id}
+                  className="stack-card-desktop"
+                  style={{ 
+                    zIndex: cardsData.length - index,
+                    transition: 'transform 0.1s linear, opacity 0.1s linear'
+                  }}
+                >
+                  <div className="card-wrapper">
+                    <Card 
+                      data={card} 
+                      rotateAngle={4 + (index * 4)} 
+                      isDesktop={true} 
+                      index={index}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Global Styles */}
-      <style >{`
-        .w-full {
+      <style>{`
+        .legacy-section {
           width: 100%;
+          font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
-        .h-svh {
-          height: 100vh;
+
+        /* Mobile Styles */
+        .mobile-view {
+          display: block;
+          background: #fefefe;
         }
-        .sticky {
-          position: sticky;
-        }
-        .top-0 {
-          top: 0;
-        }
-        .left-0 {
-          left: 0;
-        }
-        .overflow-hidden {
-          overflow: hidden;
-        }
-        .absolute {
-          position: absolute;
-        }
-        .relative {
-          position: relative;
-        }
-        .flex {
-          display: flex;
-        }
-        .grid {
-          display: grid;
-        }
-        .hidden {
+        .desktop-view {
           display: none;
         }
-        .items-center {
-          align-items: center;
-        }
-        .justify-center {
-          justify-content: center;
-        }
-        .flex-col {
-          flex-direction: column;
-        }
-        .text-center {
-          text-align: center;
-        }
-        .rounded-2xl {
-          border-radius: 16px;
-        }
-        .overflow-hidden {
+
+        .mobile-carousel {
+          padding: 40px 16px 60px;
+          background: #fefefe;
           overflow: hidden;
         }
-        .object-cover {
-          object-fit: cover;
+
+        .mobile-header {
+          text-align: center;
+          margin-bottom: 24px;
         }
-        .transition-opacity {
-          transition: opacity 0.3s ease;
+
+        .mobile-header h2 {
+          font-size: 1.25rem;
+          font-weight: 500;
+          color: #1a1a1a;
         }
-        
+
+        .carousel-container {
+          overflow: hidden;
+          border-radius: 24px;
+        }
+
+        .carousel-track {
+          display: flex;
+          transition: transform 0.3s ease-out;
+        }
+
+        .carousel-slide {
+          flex-shrink: 0;
+          width: 100%;
+          padding: 0 8px;
+        }
+
+        .carousel-dots {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          margin-top: 20px;
+        }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.2);
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s;
+          padding: 0;
+        }
+
+        .dot.active {
+          width: 24px;
+          border-radius: 4px;
+          background: #000;
+        }
+
+        .carousel-progress {
+          width: 100%;
+          height: 3px;
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 3px;
+          margin-top: 16px;
+          overflow: hidden;
+        }
+
+        .progress-bar {
+          height: 100%;
+          background: #000;
+          border-radius: 3px;
+          transition: width 0.3s ease-out;
+        }
+
+        /* Desktop Styles */
         @media (min-width: 1024px) {
-          .lg\\:flex {
-            display: flex;
-          }
-          .lg\\:hidden {
+          .mobile-view {
             display: none;
           }
-          .lg\\:items-center {
+          .desktop-view {
+            display: block;
+          }
+
+          .desktop-scroll-area {
+            height: 300vh;
+            position: relative;
+          }
+
+          .desktop-sticky {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: #fefefe;
+          }
+
+          .desktop-title {
+            position: absolute;
+            top: 32px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 20;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            background: rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(4px);
+            padding: 6px 20px;
+            width: fit-content;
+            margin: 0 auto;
+            border-radius: 40px;
+          }
+
+          .desktop-cards-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+
+          .stack-card-desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
             align-items: center;
+            justify-content: center;
+            will-change: transform, opacity;
           }
-          .lg\\:rounded-3xl {
-            border-radius: 24px;
-          }
-          .lg\\:aspect-square {
-            aspect-ratio: 1 / 1;
-          }
-          .lg\\:w-48 {
-            width: 12rem;
+
+          .card-wrapper {
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 0 20px;
           }
         }
 
-        /* Swiper Styles */
-        .swiper {
-          width: 100%;
+        /* Card Styles */
+        .card {
+          text-align: center;
+          border-radius: 28px;
+          padding: 32px 24px;
+          box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-image {
+          width: 180px;
+          height: 180px;
+          margin: 0 auto 20px;
+          border-radius: 20px;
           overflow: hidden;
         }
-        .swiper-wrapper {
-          display: flex;
+
+        .card-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
-        .swiper-slide {
-          flex-shrink: 0;
-          height: auto;
-          display: flex;
+
+        .card-title {
+          font-size: 2rem;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          margin-bottom: 1rem;
+          line-height: 1.2;
         }
-        .swiper-pagination-progressbar {
-          background: rgba(0, 0, 0, 0.1);
-          height: 3px;
-          border-radius: 3px;
+
+        .card-description {
+          font-size: 0.9rem;
+          line-height: 1.5;
         }
-        .swiper-pagination-progressbar-fill {
-          background: #000;
-          border-radius: 3px;
+
+        .card-description p {
+          margin-bottom: 0.75rem;
+        }
+
+        @media (min-width: 1280px) {
+          .card-wrapper {
+            max-width: 600px;
+          }
+          .card-title {
+            font-size: 2.5rem;
+          }
+          .card-image {
+            width: 200px;
+            height: 200px;
+          }
         }
       `}</style>
-    </div>
+    </section>
   );
 };
 

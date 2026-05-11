@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import "../../styles/shared/Navbar.css";
+
 
 const NAV_LINKS = [
   { label: "Services", hasDropdown: true, href: "/services/", dropdownId: 102 },
@@ -342,9 +344,11 @@ export default function Navbar() {
    }
  };
 
- return (
+  return (
    <>
+     {/* Navbar styles are now externalized to src/styles/shared/Navbar.css (dynamic parts remain inline). */}
      <style>{`
+
        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100;14..32,200;14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
 
        :root {

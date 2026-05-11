@@ -1,0 +1,47 @@
+/* Extracted Navbar-only styles to external file (for cleaner architecture).
+   Note: Navbar.jsx still contains a large <style> for dynamic parts.
+   This file is safe to extend without touching animations/markup.
+*/
+
+.nb-main-wrapper{font-family:var(--font-primary);position:fixed;top:0;left:0;z-index:100;width:100%;pointer-events:auto}
+.nb-nav-wrapper{width:100%}
+.nb-nav{display:flex;align-items:center;justify-content:space-between;height:70px;gap:.5rem;transition:background .3s ease,backdrop-filter .3s ease,transform .3s;transform:translateY(0);padding:0 1rem 0 1.5rem;border-radius:100px}
+.nb-logo{display:flex;align-items:center;flex-shrink:0;text-decoration:none}
+.nb-links-container{position:relative;display:flex;align-items:center;height:100%}
+.nb-hover-bg{position:absolute;top:50%;transform:translateY(-50%);height:38px;border-radius:100px;opacity:0;pointer-events:none;transition:width .25s ease,left .25s ease,opacity .2s}
+.nb-links{display:flex;align-items:center;gap:.2rem;position:relative;z-index:2}
+.nb-link{display:inline-flex;align-items:center;gap:4px;padding:.5rem 1rem;font-size:.875rem;font-weight:500;letter-spacing:-.01em;text-decoration:none;border-radius:100px;transition:color .2s ease;white-space:nowrap;cursor:pointer}
+.nb-link:hover{color:#0a0a0a}
+.nb-link-plus{font-size:.7rem;font-weight:400;opacity:.6}
+.nb-badge{background:var(--color-mint);color:var(--color-grey-900);font-size:.65rem;font-weight:700;border-radius:20px;padding:.15rem .5rem;margin-left:.25rem;line-height:1.2}
+.nb-cta{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.25rem;border-radius:100px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:transform .2s ease,background .3s ease;border:none}
+.nb-cta:hover{transform:scale(1.02)}
+.nb-cta-arrow{font-size:.75rem;opacity:.7}
+.nb-hamburger{display:none;flex-direction:column;justify-content:space-between;width:22px;height:16px;background:transparent;border:none;cursor:pointer;padding:0;z-index:101}
+.nb-hamburger span{width:100%;height:2px;border-radius:2px;transition:all .3s ease}
+.nb-hamburger.active span:first-child{transform:rotate(45deg) translate(5px,5px)}
+.nb-hamburger.active span:last-child{transform:rotate(-45deg) translate(5px,-5px)}
+.nb-mobile-menu{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);z-index:99;padding:100px 24px 40px;overflow-y:auto;transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.9,.4,1.1)}
+.nb-mobile-menu.open{transform:translateX(0)}
+.nb-mobile-link{display:block;color:#fff;font-size:2rem;font-weight:500;letter-spacing:-.03em;text-decoration:none;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.nb-mobile-cta{display:inline-block;margin-top:2rem;background:#fff;color:#0e0e0e;padding:.8rem 1.5rem;border-radius:100px;font-weight:600;text-decoration:none}
+.nb-mega-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:10px;background:#fff;border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.1);opacity:0;animation:megaMenuFadeIn .3s ease forwards;pointer-events:auto;z-index:1000}
+@keyframes megaMenuFadeIn{from{opacity:0;transform:translateX(-50%) scale(.95)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+.nb-mega-menu-inner{display:flex;padding:24px;gap:32px}
+.nb-mega-menu-links{padding:0 24px}
+.nb-mega-menu-columns{display:flex;gap:48px}
+.nb-mega-menu-column{min-width:200px}
+.nb-mega-menu-column-title{font-size:.875rem;font-weight:500;color:var(--color-grey-300);margin-bottom:16px;height:32px}
+.nb-mega-menu-link{display:block;text-decoration:none;margin-bottom:8px;font-size:1.125rem;font-weight:500;color:#0a0a0a;transition:color .2s}
+.nb-mega-menu-link:hover{color:#666}
+.nb-mega-menu-link-text{padding:4px 0}
+.nb-mega-menu-image{width:280px;position:relative}
+.nb-mega-menu-image-inner{background:#1a1a1a;border-radius:16px;overflow:hidden;aspect-ratio:1}
+.nb-mega-menu-img{width:100%;height:100%;object-fit:cover}
+.nb-mega-menu-button{position:absolute;bottom:16px;left:0;right:0;padding:0 16px}
+.nb-mega-menu-cta{display:block;background:#1a1a1a;color:#fff;text-decoration:none;padding:12px 16px;border-radius:24px;text-align:center;font-weight:500;font-size:.875rem;transition:background .2s}
+.nb-mega-menu-cta:hover{background:#333}
+@media (max-width:1023px){.nb-links-container{display:none}.nb-hamburger{display:flex}.nb-nav{padding:0 1rem}.nb-cta{display:none}.nb-mega-menu{display:none}}
+@media (min-width:1024px) and (max-width:1280px){.nb-link{font-size:.8rem;padding:.45rem .85rem}.nb-mega-menu-column{min-width:180px}.nb-mega-menu-link{font-size:1rem}}
+@media (max-width:768px){.nb-nav{transform:translateY(0)}.nb-hamburger{z-index:101}}
+
