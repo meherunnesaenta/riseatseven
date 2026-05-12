@@ -157,16 +157,21 @@ export default function MarqueeBanner() {
           <a 
             href="https://riseatseven.com/contact/"
             className="w-full relative overflow-hidden block"
-            onMouseEnter={() => {
-              // কাস্টম কার্সর ইফেক্টের জন্য (যদি লাগে)
-              const event = new CustomEvent('component-cursor-button', { 
-                detail: { active: true, text: 'Send Us Your Brief' } 
+            onPointerEnter={() => {
+              const event = new CustomEvent('component-cursor-button', {
+                detail: { active: true, text: 'Send Us Your Brief' }
               });
               window.dispatchEvent(event);
             }}
-            onMouseLeave={() => {
-              const event = new CustomEvent('component-cursor-button', { 
-                detail: { active: false, text: false, url: false } 
+            onPointerLeave={() => {
+              const event = new CustomEvent('component-cursor-button', {
+                detail: { active: false, text: false, url: false }
+              });
+              window.dispatchEvent(event);
+            }}
+            onPointerCancel={() => {
+              const event = new CustomEvent('component-cursor-button', {
+                detail: { active: false, text: false, url: false }
               });
               window.dispatchEvent(event);
             }}

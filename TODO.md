@@ -1,6 +1,7 @@
 # TODO
-- [x] Add “Explore Our Work” to `AgencySection` desktop flip-animation row.
-- [x] Add “Explore Our Work” to `AgencySection` mobile flip-animation row.
-- [x] LegacySection styles are embedded via inline `<style>` in `LegacySection.jsx`, so the separate `src/styles/home/LegacySection.css` is currently unused.
 
+- [ ] Diagnose why Vercel build exits with code 1 while local `npm run build` succeeds.
+- [ ] Retrieve the full Vercel build logs (the error details after `vite build`).
+- [ ] Fix the root cause (likely dependency/runtime or Node/Vite/Vercel settings mismatch).
+- [ ] Re-run `vercel --debug` and confirm the deployment becomes successful.
 
