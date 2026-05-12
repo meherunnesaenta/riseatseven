@@ -14,7 +14,85 @@
   }
 }
 
-/* Circle mask effect for hover overlay */
+/* Featured Work layout (extracted from FeatureCard.jsx inline <style>) */
+.desktop-only {
+  display: none;
+}
+
+.mobile-title {
+  display: block !important;
+}
+
+@media (min-width: 901px) {
+  .desktop-only {
+    display: block !important;
+  }
+
+  .mobile-title {
+    display: none !important;
+  }
+
+  .mobile-info-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-title {
+    display: block !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .featured-section-padding {
+    padding: 24px 16px 64px !important;
+  }
+
+  .card-bottom-margin {
+    margin-bottom: 20px !important;
+  }
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Name track animation */
+.name-text {
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  display: inline-block;
+}
+
+.name-item:hover .name-text {
+  transform: translateX(8px);
+}
+
+/* Body background (for this section if global doesn't override) */
+body {
+  margin: 0;
+  background: #f5f5f3;
+}
+
+/* Circle mask effect for hover overlay (if used elsewhere in this component) */
 .circle-mask-container {
   position: relative;
   overflow: hidden;
@@ -60,7 +138,7 @@
   letter-spacing: -0.015em;
 }
 
-/* Responsive text utilities */
+/* Responsive text utilities (only if classnames exist) */
 .text-md\/tight {
   font-size: 1rem;
   line-height: 1.25;
@@ -78,11 +156,6 @@
     font-size: 1.25rem;
     line-height: 1.25;
   }
-}
-
-/* Custom aspect ratio */
-.aspect-20\/9 {
-  aspect-ratio: 20 / 9;
 }
 
 /* Fix for any potential margin/padding issues */
@@ -115,8 +188,9 @@
   .circle-mask-container {
     margin-bottom: 1.25rem;
   }
-  
+
   .circle-mask-container:last-child {
     margin-bottom: 0;
   }
 }
+

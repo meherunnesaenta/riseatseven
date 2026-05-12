@@ -394,70 +394,7 @@ export default function FeaturedWorkShowcase() {
 
   return (
     <>
-      <style>{`
-        @media (min-width: 901px) {
-          .mobile-info-overlay {
-            display: none !important;
-          }
-        }
-        
-        @media (max-width: 900px) {
-          .desktop-only {
-            display: none !important;
-          }
-          .mobile-title {
-            display: block !important;
-          }
-        }
-        
-        @media (min-width: 901px) {
-          .mobile-title {
-            display: none !important;
-          }
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #2a2a2a;
-          border-radius: 4px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #555;
-          border-radius: 4px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #777;
-        }
-        
-        .name-text {
-          transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-          display: inline-block;
-        }
-        
-        .name-item:hover .name-text {
-          transform: translateX(8px);
-        }
-        
-        body {
-          margin: 0;
-          background: #f5f5f3;
-        }
-        
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-          .featured-section-padding {
-            padding: 24px 16px 64px !important;
-          }
-          .card-bottom-margin {
-            margin-bottom: 20px !important;
-          }
-        }
-      `}</style>
+
 
       <section
         id="featured-work-section"
@@ -609,19 +546,6 @@ export default function FeaturedWorkShowcase() {
               background: "#111212",
             }}
           >
-            {/* Mobile Title */}
-            <h2
-              className="mobile-title"
-              style={{
-                color: "#ffffff",
-                fontSize: "24px",
-                fontWeight: "500",
-                marginBottom: "28px",
-                letterSpacing: "-0.03em",
-              }}
-            >
-              Featured Work
-            </h2>
 
             {cases.map((item, idx) => (
               <div key={idx} className="card-bottom-margin">

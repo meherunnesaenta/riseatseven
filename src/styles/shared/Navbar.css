@@ -10,7 +10,7 @@
 .nb-links-container{position:relative;display:flex;align-items:center;height:100%}
 .nb-hover-bg{position:absolute;top:50%;transform:translateY(-50%);height:38px;border-radius:100px;opacity:0;pointer-events:none;transition:width .25s ease,left .25s ease,opacity .2s}
 .nb-links{display:flex;align-items:center;gap:.2rem;position:relative;z-index:2}
-.nb-link{display:inline-flex;align-items:center;gap:4px;padding:.5rem 1rem;font-size:.875rem;font-weight:500;letter-spacing:-.01em;text-decoration:none;border-radius:100px;transition:color .2s ease;white-space:nowrap;cursor:pointer}
+.nb-link{display:inline-flex;align-items:center;gap:4px;padding:.5rem 1rem;font: size 8rem;;font-weight:700;letter-spacing:-.01em;text-decoration:none;border-radius:100px;transition:color .2s ease;white-space:nowrap;cursor:pointer}
 .nb-link:hover{color:#0a0a0a}
 .nb-link-plus{font-size:.7rem;font-weight:400;opacity:.6}
 .nb-badge{background:var(--color-mint);color:var(--color-grey-900);font-size:.65rem;font-weight:700;border-radius:20px;padding:.15rem .5rem;margin-left:.25rem;line-height:1.2}
