@@ -11,7 +11,7 @@ export default function OurServices() {
   const buttonRef = useRef(null);
   const serviceRowsRef = useRef([]);
 
-  // Service data (original HTML থেকে নেওয়া)
+  // Service data
   const services = [
     {
       title: "Digital PR",
@@ -56,7 +56,7 @@ export default function OurServices() {
   const rightColumnServices = services.filter((_, i) => i % 2 === 1);
 
   useEffect(() => {
-    // Animate header words with letter-by-letter animation (like original HTML)
+    
     if (headingRef.current) {
       const words = headingRef.current.querySelectorAll('.heading-word');
       words.forEach((word, i) => {
