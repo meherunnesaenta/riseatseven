@@ -160,7 +160,7 @@ export default function Navbar() {
   const navRef = useRef(null);
   const hoverBgRef = useRef(null);
 
-  // স্ক্রল ইফেক্ট
+ 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
@@ -183,7 +183,7 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // এন্ট্রান্স অ্যানিমেশন
+  
  useEffect(() => {
    const ctx = gsap.context(() => {
      if (navRef.current) {
@@ -198,7 +198,7 @@ export default function Navbar() {
    return () => ctx.revert();
  }, []);
 
- // হোভার ব্যাকগ্রাউন্ড আপডেট
+
  const updateHoverBackground = (e, isHovering, linkId) => {
    if (!hoverBgRef.current || !e?.target) return;
 
@@ -227,7 +227,7 @@ export default function Navbar() {
    }
  };
 
- // মোবাইল মেনু টগল
+
  useEffect(() => {
    if (mobileMenuOpen) {
      document.body.style.overflow = "hidden";
