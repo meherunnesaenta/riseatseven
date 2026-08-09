@@ -13,17 +13,17 @@ export default function MarqueeBanner() {
   useEffect(() => {
     if (!trackRef.current || !containerRef.current) return;
 
-    // ফাংশন যা সব marquee আইটেম রিটার্ন করবে
+
     const getMarqueeItems = () => {
       return gsap.utils.toArray(trackRef.current.children);
     };
 
-    // ১. MARQUEE EFFECT - সবসময় ডানে/বামে ঘুরতে থাকবে (infinite horizontal loop)
+   
     const startMarqueeEffect = () => {
       const items = getMarqueeItems();
       if (!items.length) return null;
 
-      // টোটাল প্রস্থ ক্যালকুলেট করি
+     
       let totalWidth = 0;
       items.forEach(item => {
         totalWidth += item.offsetWidth;
@@ -32,13 +32,13 @@ export default function MarqueeBanner() {
         totalWidth += parseFloat(style.marginRight) || 0;
       });
 
-      const speed = 0.8; // গতি (পিক্সেল/সেকেন্ড)
+      const speed = 0.8; 
       const duration = totalWidth / speed;
 
-      // শুরুতে সব আইটেমকে ০ পজিশনে সেট করি
+    
       gsap.set(items, { x: 0 });
 
-      // ইনফিনিট লুপ অ্যানিমেশন (সবসময় বাম দিকে যাবে)
+     
       const animation = gsap.to(items, {
         x: -totalWidth,
         duration: duration,
@@ -47,7 +47,7 @@ export default function MarqueeBanner() {
         modifiers: {
           x: (x) => {
             const parsed = parseFloat(x);
-            // মডুলার ম্যাথ ব্যবহার করে সীমাহীন লুপ তৈরি করি
+        
             return (((parsed % totalWidth) - totalWidth) % totalWidth) + "px";
           },
         },
@@ -56,15 +56,15 @@ export default function MarqueeBanner() {
       return animation;
     };
 
-    // Marquee effect শুরু করি
+    // Marquee effect 
     marqueeAnimationRef.current = startMarqueeEffect();
 
-    // ২. SCROLL EFFECT - স্ক্রোল করলে পুরো container একটু move হবে
+    // ২. SCROLL EFFECT
     ScrollTrigger.matchMedia({
       '(pointer: fine)': () => {
-        // শুধু মাউজ ইউজারদের জন্য (ডেস্কটপ)
+        
         scrollAnimationRef.current = gsap.to(containerRef.current, {
-          xPercent: -20, // স্ক্রোল করলে 20% বামে সরে যাবে
+          xPercent: -20, 
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top 100%',
@@ -76,7 +76,7 @@ export default function MarqueeBanner() {
         });
       },
       '(pointer: coarse)': () => {
-        // টাচ ডিভাইসে (মোবাইল/ট্যাবলেট) স্ক্রল ইফেক্ট বন্ধ
+        
         if (scrollAnimationRef.current) {
           scrollAnimationRef.current.kill();
         }
@@ -84,7 +84,7 @@ export default function MarqueeBanner() {
       }
     });
 
-    // রিসাইজ হলে marquee রিক্যালকুলেট করি
+  
     const handleResize = () => {
       if (marqueeAnimationRef.current) {
         marqueeAnimationRef.current.kill();
@@ -95,7 +95,7 @@ export default function MarqueeBanner() {
 
     window.addEventListener('resize', handleResize);
 
-    // ক্লিনআপ
+    
     return () => {
       if (marqueeAnimationRef.current) marqueeAnimationRef.current.kill();
       if (scrollAnimationRef.current) scrollAnimationRef.current?.kill();
@@ -104,7 +104,7 @@ export default function MarqueeBanner() {
     };
   }, []);
 
-  // আইটেম তৈরি করি (original HTML এর প্যাটার্ন অনুসারে)
+  
   const createMarqueeItems = () => {
     const items = [];
     const contentPairs = [
@@ -118,7 +118,7 @@ export default function MarqueeBanner() {
       }
     ];
 
-    // Original HTML এর মত ৮-১০ বার রিপিট করি যাতে seamless loop হয়
+   
     for (let repeat = 0; repeat < 10; repeat++) {
       for (let i = 0; i < contentPairs.length; i++) {
         const pair = contentPairs[i];
@@ -176,7 +176,7 @@ export default function MarqueeBanner() {
               window.dispatchEvent(event);
             }}
           >
-            {/* কন্টেইনার - স্ক্রল ইফেক্ট এখানে apply হবে */}
+          
             <div 
               ref={containerRef}
               className="w-[120vw] flex relative z-0 overflow-hidden"
